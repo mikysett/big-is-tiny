@@ -1,6 +1,6 @@
-# Big is Tiny (BiT) - Big changes management made simple
+# Big is Tiny (BiT) - Big changes made simple
 
-BiT is a basic and simple tool to split your big branches into smaller PR to improve developement speed, reduce reviews times and improve their quality.
+BiT is a basic and simple tool to split your big branches into smaller PR to improve development speed, reduce reviews times and improve their quality.
 
 ## Key features
 
