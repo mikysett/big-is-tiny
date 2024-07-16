@@ -12,11 +12,13 @@ type BigChange struct {
 }
 
 type Settings struct {
-	IsDryRun   bool
-	IsDraftPrs bool
-	Verbose    bool
-	RepoPath   string
-	Platform   Platform
+	MainBranch    string
+	BranchToSplit string
+	IsDryRun      bool
+	IsDraftPrs    bool
+	Verbose       bool
+	RepoPath      string
+	Platform      Platform
 }
 
 type Domain struct {
