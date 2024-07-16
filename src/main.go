@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log/slog"
 	"os"
 )
@@ -46,12 +45,20 @@ const (
 	GitHub
 )
 
+type Branch struct {
+	name string
+}
+
+type PullRequest struct {
+	name string
+}
+
 func main() {
 	log := setLog()
 
 	err := run("config.json", log)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 }
 
