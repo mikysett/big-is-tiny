@@ -4,11 +4,13 @@ func setupConfig(configPath string) (*BigChange, error) {
 	// TODO: Replace hardcoded values with fetched ones
 	return &BigChange{
 		Settings: Settings{
-			IsDryRun:   true,
-			IsDraftPrs: false,
-			Verbose:    true,
-			RepoPath:   "../test_repo",
-			Platform:   Azure,
+			MainBranch:    "main",
+			BranchToSplit: "big-change-to-split",
+			IsDryRun:      true,
+			IsDraftPrs:    false,
+			Verbose:       true,
+			RepoPath:      "../../test_repo",
+			Platform:      Platform(Azure),
 		},
 		Domains: []Domain{
 			{
