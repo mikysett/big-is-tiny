@@ -1,34 +1,43 @@
 package main
 
 import (
+	"context"
 	"log/slog"
 	"os"
 )
 
 type BigChange struct {
-	Domains  []Domain
-	Settings Settings
+	Domains  []*Domain
+	Settings *Settings
 }
 
 type Settings struct {
-	MainBranch    string
-	BranchToSplit string
-	IsDryRun      bool
-	IsDraftPrs    bool
-	Verbose       bool
-	RepoPath      string
-	Platform      Platform
+	MainBranch         string
+	BranchToSplit      string
+	IsDryRun           bool
+	IsDraftPrs         bool
+	Verbose            bool
+	RepoPath           string
+	BranchNameTemplate string
+	CommitMsgTemplate  string
+	PrNameTemplate     string
+	PrDescription      string
+	Platform           Platform
 }
 
 type Domain struct {
-	Name  string
-	Path  string
-	Teams []Team
+	Name        string
+	Id          string
+	Path        string
+	Teams       []Team
+	Branch      *Branch
+	PullRequest *PullRequest
 }
 
 type Team struct {
-	TeamUrl  string
-	TeamType Communication
+	Name string
+	Url  string
+	Type Communication
 }
 
 type Communication int
@@ -53,18 +62,30 @@ type PullRequest struct {
 	name string
 }
 
-func main() {
-	log := setLog()
+type ctxLogger struct{}
 
-	err := run("config.json", log)
+func main() {
+	ctx := ContextWithLogger(context.Background(), newLogger())
+	err := run(ctx, "config.json")
 	if err != nil {
 		os.Exit(1)
 	}
 }
 
-func setLog() *slog.Logger {
+func newLogger() *slog.Logger {
 	jsonHandler := slog.NewJSONHandler(os.Stdout, nil)
 	structuredLog := slog.New(jsonHandler)
 
 	return structuredLog
+}
+
+func ContextWithLogger(ctx context.Context, log *slog.Logger) context.Context {
+	return context.WithValue(ctx, ctxLogger{}, log)
+}
+
+func LoggerFromContext(ctx context.Context) *slog.Logger {
+	if l, ok := ctx.Value(ctxLogger{}).(*slog.Logger); ok {
+		return l
+	}
+	return newLogger()
 }
