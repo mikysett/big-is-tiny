@@ -23,6 +23,11 @@ func run(ctx context.Context, configPath string) (err error) {
 	}
 
 	// TODO: add a defer here to cleanup branches, PRs and un-staged files in case of failure or success accordingly
+	defer func() {
+		if err != nil {
+			cleanup(ctx, bigChange)
+		}
+	}()
 
 	// All branches have need to be checked out from the main branch
 	err = gitCheckout(ctx, bigChange.Settings.MainBranch)
@@ -59,6 +64,10 @@ func run(ctx context.Context, configPath string) (err error) {
 		}
 
 		// TODO: create the pull request
+		domain.PullRequest, err = createPullRequest(ctx, domain, bigChange.Settings)
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -145,6 +154,16 @@ func generateFromTemplate(domain *Domain, template string) string {
 	return r.Replace(template)
 }
 
-func createPullRequest(ctx context.Context, bigChange *BigChange, branches []Branch) (*PullRequest, error) {
+func createPullRequest(ctx context.Context, domain *Domain, settings *Settings) (*PullRequest, error) {
 	return nil, fmt.Errorf("not implemented")
+}
+
+func cleanup(ctx context.Context, bigChange *BigChange) {
+	_ = gitCheckout(ctx, bigChange.Settings.MainBranch)
+	for _, domain := range bigChange.Domains {
+		if domain.Branch == nil {
+			continue
+		}
+		_ = gitDeleteBranch(ctx, domain.Branch.name)
+	}
 }
