@@ -28,6 +28,14 @@ func gitDeleteBranch(ctx context.Context, branchName string) error {
 	return nil
 }
 
+func gitDeleteRemoteBranch(ctx context.Context, remote string, branchName string) error {
+	_, err := runCmd(ctx, "git", "push", remote, "-d", branchName)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func gitStatus(ctx context.Context) ([]byte, error) {
 	resp, err := runCmd(ctx, "git", "status", "--porcelain")
 	if err != nil {
@@ -62,6 +70,14 @@ func gitCheckoutFiles(ctx context.Context, branchName string) error {
 
 func gitReset(ctx context.Context) error {
 	_, err := runCmd(ctx, "git", "reset")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func gitPushSetUpstream(ctx context.Context, remote string, branchName string) error {
+	_, err := runCmd(ctx, "git", "push", "--set-upstream", remote, branchName)
 	if err != nil {
 		return err
 	}

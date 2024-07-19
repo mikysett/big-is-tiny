@@ -100,9 +100,9 @@ func fileChangedInDomain(domainPath string, changedFiles []string) bool {
 }
 
 func createBranch(ctx context.Context, domain *Domain, settings *Settings) (branch *Branch, err error) {
-	name := generateFromTemplate(domain, settings.BranchNameTemplate)
+	branchName := generateFromTemplate(domain, settings.BranchNameTemplate)
 
-	err = gitCheckoutNewBranch(ctx, name)
+	err = gitCheckoutNewBranch(ctx, branchName)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +111,8 @@ func createBranch(ctx context.Context, domain *Domain, settings *Settings) (bran
 	defer func() {
 		if err != nil {
 			_ = gitCheckout(ctx, settings.MainBranch)
-			_ = gitDeleteBranch(ctx, name)
+			_ = gitDeleteBranch(ctx, branchName)
+			_ = gitDeleteRemoteBranch(ctx, settings.Remote, branchName)
 		}
 	}()
 
@@ -125,7 +126,10 @@ func createBranch(ctx context.Context, domain *Domain, settings *Settings) (bran
 		return nil, err
 	}
 
-	// TODO: git push set upstream
+	err = gitPushSetUpstream(ctx, settings.Remote, branchName)
+	if err != nil {
+		return nil, err
+	}
 
 	// We go back to main branch not to change the repository initial state
 	err = gitCheckout(ctx, settings.MainBranch)
@@ -134,7 +138,7 @@ func createBranch(ctx context.Context, domain *Domain, settings *Settings) (bran
 	}
 
 	return &Branch{
-		name: name,
+		name: branchName,
 	}, nil
 
 }
@@ -165,5 +169,6 @@ func cleanup(ctx context.Context, bigChange *BigChange) {
 			continue
 		}
 		_ = gitDeleteBranch(ctx, domain.Branch.name)
+		_ = gitDeleteRemoteBranch(ctx, bigChange.Settings.Remote, domain.Branch.name)
 	}
 }

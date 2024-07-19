@@ -11,6 +11,7 @@ func setupConfig(ctx context.Context, configPath string) (*BigChange, error) {
 	return &BigChange{
 		Settings: &Settings{
 			MainBranch:         "main",
+			Remote:             "origin",
 			BranchToSplit:      "big-change-to-split",
 			IsDryRun:           true,
 			IsDraftPrs:         false,

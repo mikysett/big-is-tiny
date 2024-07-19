@@ -13,6 +13,7 @@ type BigChange struct {
 
 type Settings struct {
 	MainBranch         string
+	Remote             string
 	BranchToSplit      string
 	IsDryRun           bool
 	IsDraftPrs         bool
