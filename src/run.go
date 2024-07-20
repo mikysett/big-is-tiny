@@ -7,7 +7,7 @@ import (
 	"syscall"
 )
 
-func run(ctx context.Context, flags Flags) (err error) {
+func (bit *BigIsTiny) run(ctx context.Context, flags Flags) (err error) {
 	log := LoggerFromContext(ctx)
 
 	bigChange, err := setupConfig(ctx, flags.ConfigPath)
@@ -25,30 +25,30 @@ func run(ctx context.Context, flags Flags) (err error) {
 	// TODO: add a defer here to cleanup branches, PRs and un-staged files in case of failure or success accordingly
 	defer func() {
 		if err != nil {
-			cleanup(ctx, bigChange)
+			bit.cleanup(ctx, bigChange)
 		}
 	}()
 
 	// All branches have need to be checked out from the main branch
-	err = gitCheckout(ctx, bigChange.Settings.MainBranch)
+	err = bit.gitCheckout(ctx, bigChange.Settings.MainBranch)
 	if err != nil {
 		return err
 	}
 
 	// We fetch the files from the change we are working on
-	err = gitCheckoutFiles(ctx, bigChange.Settings.BranchToSplit)
+	err = bit.gitCheckoutFiles(ctx, bigChange.Settings.BranchToSplit)
 	if err != nil {
 		return err
 	}
 
 	// Un-stage the files added from the big change branch
-	err = gitReset(ctx)
+	err = bit.gitReset(ctx)
 	if err != nil {
 		return err
 	}
 
 	// Get a list of all touched files
-	changedFiles, err := listChangedFiles(ctx)
+	changedFiles, err := bit.listChangedFiles(ctx)
 	if err != nil {
 		return err
 	}
@@ -66,7 +66,7 @@ func run(ctx context.Context, flags Flags) (err error) {
 			continue
 		}
 
-		err = createBranch(ctx, domain, bigChange.Settings)
+		err = bit.createBranch(ctx, domain, bigChange.Settings)
 		if err != nil {
 			return err
 		}
@@ -79,14 +79,14 @@ func run(ctx context.Context, flags Flags) (err error) {
 	}
 
 	if flags.Cleanup {
-		cleanup(ctx, bigChange)
+		bit.cleanup(ctx, bigChange)
 	}
 
 	return nil
 }
 
-func listChangedFiles(ctx context.Context) ([]string, error) {
-	gitStatusResponse, err := gitStatus(ctx)
+func (bit *BigIsTiny) listChangedFiles(ctx context.Context) ([]string, error) {
+	gitStatusResponse, err := bit.gitStatus(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -111,29 +111,29 @@ func fileChangedInDomain(domainPath string, changedFiles []string) bool {
 	return false
 }
 
-func createBranch(ctx context.Context, domain *Domain, settings *Settings) error {
-	err := gitCheckoutNewBranch(ctx, domain.Branch.name)
+func (bit *BigIsTiny) createBranch(ctx context.Context, domain *Domain, settings *Settings) error {
+	err := bit.gitCheckoutNewBranch(ctx, domain.Branch.name)
 	if err != nil {
 		return err
 	}
 
-	err = gitAdd(ctx, domain.Path)
+	err = bit.gitAdd(ctx, domain.Path)
 	if err != nil {
 		return err
 	}
 
-	err = gitCommit(ctx, generateFromTemplate(domain, settings.CommitMsgTemplate))
+	err = bit.gitCommit(ctx, generateFromTemplate(domain, settings.CommitMsgTemplate))
 	if err != nil {
 		return err
 	}
 
-	err = gitPushSetUpstream(ctx, settings.Remote, domain.Branch.name)
+	err = bit.gitPushSetUpstream(ctx, settings.Remote, domain.Branch.name)
 	if err != nil {
 		return err
 	}
 
 	// We go back to main branch not to change the repository initial state
-	err = gitCheckout(ctx, settings.MainBranch)
+	err = bit.gitCheckout(ctx, settings.MainBranch)
 	if err != nil {
 		return err
 	}
@@ -166,16 +166,16 @@ func createPullRequest(ctx context.Context, domain *Domain, settings *Settings) 
 	return nil, fmt.Errorf("not implemented")
 }
 
-func cleanup(ctx context.Context, bigChange *BigChange) {
+func (bit *BigIsTiny) cleanup(ctx context.Context, bigChange *BigChange) {
 	log := LoggerFromContext(ctx)
 	log.Info("remove all branches and PRs")
 
-	_ = gitCheckout(ctx, bigChange.Settings.MainBranch)
+	_ = bit.gitCheckout(ctx, bigChange.Settings.MainBranch)
 	for _, domain := range bigChange.Domains {
 		if domain.Branch == nil {
 			continue
 		}
-		_ = gitDeleteBranch(ctx, domain.Branch.name)
-		_ = gitDeleteRemoteBranch(ctx, bigChange.Settings.Remote, domain.Branch.name)
+		_ = bit.gitDeleteBranch(ctx, domain.Branch.name)
+		_ = bit.gitDeleteRemoteBranch(ctx, bigChange.Settings.Remote, domain.Branch.name)
 	}
 }

@@ -73,11 +73,42 @@ type Flags struct {
 	ConfigPath string
 }
 
+type GitZeroArgsFunc func(context.Context) error
+type GitOneArgStringFunc func(context.Context, string) error
+type GitTwoArgsStringFunc func(context.Context, string, string) error
+type GitStatusFunc func(context.Context) ([]byte, error)
+
+type BigIsTiny struct {
+	gitCheckout           GitOneArgStringFunc
+	gitCheckoutNewBranch  GitOneArgStringFunc
+	gitDeleteBranch       GitOneArgStringFunc
+	gitDeleteRemoteBranch GitTwoArgsStringFunc
+	gitStatus             GitStatusFunc
+	gitAdd                GitOneArgStringFunc
+	gitCommit             GitOneArgStringFunc
+	gitCheckoutFiles      GitOneArgStringFunc
+	gitReset              GitZeroArgsFunc
+	gitPushSetUpstream    GitTwoArgsStringFunc
+}
+
 func main() {
 	flags := getFlags()
 
 	ctx := ContextWithLogger(context.Background(), newLogger(flags.Verbose))
-	err := run(ctx, flags)
+	bigIsTiny := BigIsTiny{
+		gitCheckout:           gitCheckout,
+		gitCheckoutNewBranch:  gitCheckoutNewBranch,
+		gitDeleteBranch:       gitDeleteBranch,
+		gitDeleteRemoteBranch: gitDeleteRemoteBranch,
+		gitStatus:             gitStatus,
+		gitAdd:                gitAdd,
+		gitCommit:             gitCommit,
+		gitCheckoutFiles:      gitCheckoutFiles,
+		gitReset:              gitReset,
+		gitPushSetUpstream:    gitPushSetUpstream,
+	}
+
+	err := bigIsTiny.run(ctx, flags)
 	if err != nil {
 		os.Exit(1)
 	}
