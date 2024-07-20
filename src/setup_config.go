@@ -31,7 +31,7 @@ func setupConfig(ctx context.Context, configPath string) (*BigChange, error) {
 				Teams: []Team{
 					{
 						Name: "First Team AA",
-						Url:  "team_url1",
+						Url:  "https://example_1.com",
 						Type: Communication(Slack),
 					},
 				},
@@ -43,12 +43,12 @@ func setupConfig(ctx context.Context, configPath string) (*BigChange, error) {
 				Teams: []Team{
 					{
 						Name: "Team BB 1",
-						Url:  "team_url2",
+						Url:  "https://example_2.com",
 						Type: Communication(Teams),
 					},
 					{
 						Name: "Team BB 2",
-						Url:  "team_url2bis",
+						Url:  "https://example_2_bis.com",
 						Type: Communication(Slack),
 					},
 				},
