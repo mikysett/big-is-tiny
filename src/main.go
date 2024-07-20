@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"log/slog"
 	"os"
 )
@@ -65,20 +66,45 @@ type PullRequest struct {
 
 type ctxLogger struct{}
 
+type Flags struct {
+	Cleanup    bool
+	Verbose    bool
+	ConfigPath string
+}
+
 func main() {
-	ctx := ContextWithLogger(context.Background(), newLogger())
-	err := run(ctx, "config.json")
+	flags := getFlags()
+
+	ctx := ContextWithLogger(context.Background(), newLogger(flags.Verbose))
+	err := run(ctx, flags)
 	if err != nil {
 		os.Exit(1)
 	}
 }
 
-func newLogger() *slog.Logger {
+func getFlags() Flags {
+	cleanup := flag.Bool("cleanup", false, "delete branches and PRs")
+	verbose := flag.Bool("verbose", false, "set logs to DEBUG level")
+	flag.Parse()
+
+	flags := Flags{
+		Cleanup: *cleanup,
+		Verbose: *verbose,
+	}
+	if configPath := flag.Arg(0); configPath != "" {
+		flags.ConfigPath = configPath
+	} else {
+		flags.ConfigPath = "config.json"
+	}
+
+	return flags
+}
+
+func newLogger(verbose bool) *slog.Logger {
 	// Default level is Info
 	var programLevel = new(slog.LevelVar)
 
-	logLevel, ok := os.LookupEnv("LOG_LEVEL")
-	if ok && logLevel == "debug" {
+	if verbose {
 		programLevel.Set(slog.LevelDebug)
 	}
 
@@ -96,5 +122,5 @@ func LoggerFromContext(ctx context.Context) *slog.Logger {
 	if l, ok := ctx.Value(ctxLogger{}).(*slog.Logger); ok {
 		return l
 	}
-	return newLogger()
+	return newLogger(false)
 }
