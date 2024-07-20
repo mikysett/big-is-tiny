@@ -19,7 +19,6 @@ type Settings struct {
 	BranchToSplit      string
 	IsDryRun           bool
 	IsDraftPrs         bool
-	Verbose            bool
 	RepoPath           string
 	BranchNameTemplate string
 	CommitMsgTemplate  string

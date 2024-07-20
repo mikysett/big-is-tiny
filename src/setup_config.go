@@ -15,7 +15,6 @@ func setupConfig(ctx context.Context, configPath string) (*BigChange, error) {
 			BranchToSplit:      "big-change-to-split",
 			IsDryRun:           true,
 			IsDraftPrs:         false,
-			Verbose:            true,
 			RepoPath:           "../../test_repo",
 			BranchNameTemplate: "bit-{{domain_name}}-big-change-split",
 			CommitMsgTemplate:  "implement new feature for {{domain_name}} at {{team_name_1}}({{team_url_1}}) and {{team_name_2}}({{team_url_2}})",
