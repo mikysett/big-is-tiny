@@ -26,6 +26,22 @@ var runTests = []struct {
 		},
 	},
 	{
+		description: "Don't create branches and PRs on cleanup",
+		given: given{
+			chdirWithLogs: fixtureChdirWithLogs(),
+			flags: fixtureFlags(func(f *Flags) {
+				f.Cleanup = true
+			}),
+			gitOps: fixtureGitOps(func(g *GitOps) {
+				g.gitAdd = func(ctx context.Context, s string) error { return fmt.Errorf("gitAdd should not be called") }
+				g.gitCommit = func(ctx context.Context, s string) error { return fmt.Errorf("gitCommit should not be called") }
+				g.gitPushSetUpstream = func(ctx context.Context, s1, s2 string) error {
+					return fmt.Errorf("gitPushSetUpstream should not be called")
+				}
+			}),
+		},
+	},
+	{
 		description: "Fail on change directory",
 		given: given{
 			chdirWithLogs: func(ctx context.Context, s string) error { return fmt.Errorf("chdir failed") },
