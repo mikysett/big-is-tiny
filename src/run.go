@@ -14,7 +14,7 @@ func run(ctx context.Context, configPath string) (err error) {
 	if err != nil {
 		return err
 	}
-	log.Info("config extracted from config file", "bigChange", bigChange)
+	log.Debug("config extracted from config file", "bigChange", bigChange)
 
 	err = syscall.Chdir(bigChange.Settings.RepoPath)
 	if err != nil {
@@ -52,22 +52,25 @@ func run(ctx context.Context, configPath string) (err error) {
 	if err != nil {
 		return err
 	}
-	log.Info("changed files", "files", changedFiles)
+	log.Debug("changed files", "files", changedFiles)
 
 	for _, domain := range bigChange.Domains {
 		if !fileChangedInDomain(domain.Path, changedFiles) {
 			continue
 		}
-		domain.Branch, err = createBranch(ctx, domain, bigChange.Settings)
+		domain.Branch = &Branch{
+			name: generateFromTemplate(domain, bigChange.Settings.BranchNameTemplate),
+		}
+		err = createBranch(ctx, domain, bigChange.Settings)
 		if err != nil {
 			return err
 		}
 
 		// TODO: create the pull request
-		domain.PullRequest, err = createPullRequest(ctx, domain, bigChange.Settings)
-		if err != nil {
-			return err
-		}
+		// domain.PullRequest, err = createPullRequest(ctx, domain, bigChange.Settings)
+		// if err != nil {
+		// 	return err
+		// }
 	}
 
 	return nil
@@ -99,48 +102,34 @@ func fileChangedInDomain(domainPath string, changedFiles []string) bool {
 	return false
 }
 
-func createBranch(ctx context.Context, domain *Domain, settings *Settings) (branch *Branch, err error) {
-	branchName := generateFromTemplate(domain, settings.BranchNameTemplate)
-
-	err = gitCheckoutNewBranch(ctx, branchName)
+func createBranch(ctx context.Context, domain *Domain, settings *Settings) error {
+	err := gitCheckoutNewBranch(ctx, domain.Branch.name)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	// If something goes wrong we want to delete the branch to reduce garbage
-	defer func() {
-		if err != nil {
-			_ = gitCheckout(ctx, settings.MainBranch)
-			_ = gitDeleteBranch(ctx, branchName)
-			_ = gitDeleteRemoteBranch(ctx, settings.Remote, branchName)
-		}
-	}()
 
 	err = gitAdd(ctx, domain.Path)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = gitCommit(ctx, generateFromTemplate(domain, settings.CommitMsgTemplate))
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	err = gitPushSetUpstream(ctx, settings.Remote, branchName)
+	err = gitPushSetUpstream(ctx, settings.Remote, domain.Branch.name)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	// We go back to main branch not to change the repository initial state
 	err = gitCheckout(ctx, settings.MainBranch)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &Branch{
-		name: branchName,
-	}, nil
-
+	return nil
 }
 
 func generateFromTemplate(domain *Domain, template string) string {
@@ -158,11 +147,20 @@ func generateFromTemplate(domain *Domain, template string) string {
 	return r.Replace(template)
 }
 
-func createPullRequest(ctx context.Context, domain *Domain, settings *Settings) (*PullRequest, error) {
+func createPullRequest(ctx context.Context, domain *Domain, settings *Settings) (pr *PullRequest, err error) {
+	defer func() {
+		if err != nil {
+			log := LoggerFromContext(ctx)
+			log.Error("failed to create Pull Request", "error", err)
+		}
+	}()
 	return nil, fmt.Errorf("not implemented")
 }
 
 func cleanup(ctx context.Context, bigChange *BigChange) {
+	log := LoggerFromContext(ctx)
+	log.Info("cleaning up after failure")
+
 	_ = gitCheckout(ctx, bigChange.Settings.MainBranch)
 	for _, domain := range bigChange.Domains {
 		if domain.Branch == nil {
