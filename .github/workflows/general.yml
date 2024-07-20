@@ -1,0 +1,15 @@
+name: Go
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Test
+    run-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+      with:
+        go-version-file: 'src/go.mod'
+      - run: make test
