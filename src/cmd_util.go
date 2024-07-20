@@ -17,6 +17,12 @@ func runCmd(ctx context.Context, name string, args ...string) ([]byte, error) {
 			"args", strings.Join(args, " "),
 			"output", string(output[:]),
 			"error", err)
+	} else {
+		log.Debug("run command",
+			"command", name,
+			"args", strings.Join(args, " "),
+			"output", string(output[:]),
+			"error", err)
 	}
 	return output, err
 }
