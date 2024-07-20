@@ -7,10 +7,10 @@ import (
 	"syscall"
 )
 
-func (bit *BigIsTiny) run(ctx context.Context, flags Flags) (err error) {
+func (bit *BigIsTiny) run(ctx context.Context) (err error) {
 	log := LoggerFromContext(ctx)
 
-	bigChange, err := setupConfig(ctx, flags.ConfigPath)
+	bigChange, err := setupConfig(ctx, bit.flags.ConfigPath)
 	if err != nil {
 		return err
 	}
@@ -62,7 +62,7 @@ func (bit *BigIsTiny) run(ctx context.Context, flags Flags) (err error) {
 			name: generateFromTemplate(domain, bigChange.Settings.BranchNameTemplate),
 		}
 
-		if flags.Cleanup {
+		if bit.flags.Cleanup {
 			continue
 		}
 
@@ -78,7 +78,7 @@ func (bit *BigIsTiny) run(ctx context.Context, flags Flags) (err error) {
 		// }
 	}
 
-	if flags.Cleanup {
+	if bit.flags.Cleanup {
 		bit.cleanup(ctx, bigChange)
 	}
 

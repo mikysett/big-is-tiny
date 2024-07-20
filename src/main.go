@@ -78,6 +78,7 @@ type GitTwoArgsStringFunc func(context.Context, string, string) error
 type GitStatusFunc func(context.Context) ([]byte, error)
 
 type BigIsTiny struct {
+	flags                 Flags
 	gitCheckout           GitOneArgStringFunc
 	gitCheckoutNewBranch  GitOneArgStringFunc
 	gitDeleteBranch       GitOneArgStringFunc
@@ -95,6 +96,7 @@ func main() {
 
 	ctx := ContextWithLogger(context.Background(), newLogger(flags.Verbose))
 	bigIsTiny := BigIsTiny{
+		flags:                 flags,
 		gitCheckout:           gitCheckout,
 		gitCheckoutNewBranch:  gitCheckoutNewBranch,
 		gitDeleteBranch:       gitDeleteBranch,
@@ -107,7 +109,7 @@ func main() {
 		gitPushSetUpstream:    gitPushSetUpstream,
 	}
 
-	err := bigIsTiny.run(ctx, flags)
+	err := bigIsTiny.run(ctx)
 	if err != nil {
 		os.Exit(1)
 	}
