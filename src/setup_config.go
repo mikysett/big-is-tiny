@@ -26,7 +26,7 @@ func setupConfig(ctx context.Context, configPath string) (*BigChange, error) {
 			{
 				Name: "dom1",
 				Id:   "AA",
-				Path: "domains/dom1",
+				Path: "domains/dom1/",
 				Teams: []Team{
 					{
 						Name: "First Team AA",
@@ -38,7 +38,7 @@ func setupConfig(ctx context.Context, configPath string) (*BigChange, error) {
 			{
 				Name: "dom2",
 				Id:   "BB",
-				Path: "domains/dom2",
+				Path: "domains/dom2/",
 				Teams: []Team{
 					{
 						Name: "Team BB 1",
