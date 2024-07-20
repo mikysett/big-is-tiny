@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log/slog"
 	"os"
 )
@@ -82,14 +83,27 @@ func main() {
 	}
 }
 
+const usage = `Usage of big-is-tiny:
+  -cleanup
+        delete branches and PRs
+  -v, --verbose
+        set logs to DEBUG level
+  -h, --help
+        print this help information
+`
+
 func getFlags() Flags {
-	cleanup := flag.Bool("cleanup", false, "delete branches and PRs")
-	verbose := flag.Bool("verbose", false, "set logs to DEBUG level")
+	var verbose bool
+	var cleanup bool
+	flag.BoolVar(&cleanup, "cleanup", false, "delete branches and PRs")
+	flag.BoolVar(&verbose, "verbose", false, "set logs to DEBUG level")
+	flag.BoolVar(&verbose, "v", false, "set logs to DEBUG level")
+	flag.Usage = func() { fmt.Fprint(os.Stderr, usage) }
 	flag.Parse()
 
 	flags := Flags{
-		Cleanup: *cleanup,
-		Verbose: *verbose,
+		Cleanup: cleanup,
+		Verbose: verbose,
 	}
 	if configPath := flag.Arg(0); configPath != "" {
 		flags.ConfigPath = configPath
