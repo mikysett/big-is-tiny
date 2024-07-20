@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"syscall"
 )
 
 func (bit *BigIsTiny) run(ctx context.Context) (err error) {
@@ -16,9 +15,8 @@ func (bit *BigIsTiny) run(ctx context.Context) (err error) {
 	}
 	log.Debug("config extracted from config file", "bigChange", bigChange)
 
-	err = syscall.Chdir(bigChange.Settings.RepoPath)
+	err = bit.chdirWithLogs(ctx, bigChange.Settings.RepoPath)
 	if err != nil {
-		log.Error("failed to change directory", "target directory", bigChange.Settings.RepoPath, "error", err)
 		return err
 	}
 
