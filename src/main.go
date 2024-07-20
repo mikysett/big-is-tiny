@@ -78,8 +78,9 @@ type GitTwoArgsStringFunc func(context.Context, string, string) error
 type GitStatusFunc func(context.Context) ([]byte, error)
 
 type BigIsTiny struct {
-	flags  Flags
-	gitOps *GitOps
+	chdirWithLogs func(context.Context, string) error
+	flags         Flags
+	gitOps        *GitOps
 }
 
 type GitOps struct {
@@ -100,7 +101,8 @@ func main() {
 
 	ctx := ContextWithLogger(context.Background(), newLogger(flags.Verbose))
 	bigIsTiny := BigIsTiny{
-		flags: flags,
+		chdirWithLogs: chdirWithLogs,
+		flags:         flags,
 		gitOps: &GitOps{
 			gitCheckout:           gitCheckout,
 			gitCheckoutNewBranch:  gitCheckoutNewBranch,
