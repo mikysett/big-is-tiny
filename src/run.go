@@ -7,10 +7,10 @@ import (
 	"syscall"
 )
 
-func run(ctx context.Context, configPath string) (err error) {
+func run(ctx context.Context, flags Flags) (err error) {
 	log := LoggerFromContext(ctx)
 
-	bigChange, err := setupConfig(ctx, configPath)
+	bigChange, err := setupConfig(ctx, flags.ConfigPath)
 	if err != nil {
 		return err
 	}
@@ -61,6 +61,11 @@ func run(ctx context.Context, configPath string) (err error) {
 		domain.Branch = &Branch{
 			name: generateFromTemplate(domain, bigChange.Settings.BranchNameTemplate),
 		}
+
+		if flags.Cleanup {
+			continue
+		}
+
 		err = createBranch(ctx, domain, bigChange.Settings)
 		if err != nil {
 			return err
@@ -71,6 +76,10 @@ func run(ctx context.Context, configPath string) (err error) {
 		// if err != nil {
 		// 	return err
 		// }
+	}
+
+	if flags.Cleanup {
+		cleanup(ctx, bigChange)
 	}
 
 	return nil
@@ -159,7 +168,7 @@ func createPullRequest(ctx context.Context, domain *Domain, settings *Settings) 
 
 func cleanup(ctx context.Context, bigChange *BigChange) {
 	log := LoggerFromContext(ctx)
-	log.Info("cleaning up after failure")
+	log.Info("remove all branches and PRs")
 
 	_ = gitCheckout(ctx, bigChange.Settings.MainBranch)
 	for _, domain := range bigChange.Domains {
