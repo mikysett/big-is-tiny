@@ -74,7 +74,15 @@ func main() {
 }
 
 func newLogger() *slog.Logger {
-	jsonHandler := slog.NewJSONHandler(os.Stdout, nil)
+	// Default level is Info
+	var programLevel = new(slog.LevelVar)
+
+	logLevel, ok := os.LookupEnv("LOG_LEVEL")
+	if ok && logLevel == "debug" {
+		programLevel.Set(slog.LevelDebug)
+	}
+
+	jsonHandler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: programLevel})
 	structuredLog := slog.New(jsonHandler)
 
 	return structuredLog
