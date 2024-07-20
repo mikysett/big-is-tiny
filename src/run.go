@@ -30,19 +30,19 @@ func (bit *BigIsTiny) run(ctx context.Context) (err error) {
 	}()
 
 	// All branches have need to be checked out from the main branch
-	err = bit.gitCheckout(ctx, bigChange.Settings.MainBranch)
+	err = bit.gitOps.gitCheckout(ctx, bigChange.Settings.MainBranch)
 	if err != nil {
 		return err
 	}
 
 	// We fetch the files from the change we are working on
-	err = bit.gitCheckoutFiles(ctx, bigChange.Settings.BranchToSplit)
+	err = bit.gitOps.gitCheckoutFiles(ctx, bigChange.Settings.BranchToSplit)
 	if err != nil {
 		return err
 	}
 
 	// Un-stage the files added from the big change branch
-	err = bit.gitReset(ctx)
+	err = bit.gitOps.gitReset(ctx)
 	if err != nil {
 		return err
 	}
@@ -86,7 +86,7 @@ func (bit *BigIsTiny) run(ctx context.Context) (err error) {
 }
 
 func (bit *BigIsTiny) listChangedFiles(ctx context.Context) ([]string, error) {
-	gitStatusResponse, err := bit.gitStatus(ctx)
+	gitStatusResponse, err := bit.gitOps.gitStatus(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -112,28 +112,28 @@ func fileChangedInDomain(domainPath string, changedFiles []string) bool {
 }
 
 func (bit *BigIsTiny) createBranch(ctx context.Context, domain *Domain, settings *Settings) error {
-	err := bit.gitCheckoutNewBranch(ctx, domain.Branch.name)
+	err := bit.gitOps.gitCheckoutNewBranch(ctx, domain.Branch.name)
 	if err != nil {
 		return err
 	}
 
-	err = bit.gitAdd(ctx, domain.Path)
+	err = bit.gitOps.gitAdd(ctx, domain.Path)
 	if err != nil {
 		return err
 	}
 
-	err = bit.gitCommit(ctx, generateFromTemplate(domain, settings.CommitMsgTemplate))
+	err = bit.gitOps.gitCommit(ctx, generateFromTemplate(domain, settings.CommitMsgTemplate))
 	if err != nil {
 		return err
 	}
 
-	err = bit.gitPushSetUpstream(ctx, settings.Remote, domain.Branch.name)
+	err = bit.gitOps.gitPushSetUpstream(ctx, settings.Remote, domain.Branch.name)
 	if err != nil {
 		return err
 	}
 
 	// We go back to main branch not to change the repository initial state
-	err = bit.gitCheckout(ctx, settings.MainBranch)
+	err = bit.gitOps.gitCheckout(ctx, settings.MainBranch)
 	if err != nil {
 		return err
 	}
@@ -170,12 +170,12 @@ func (bit *BigIsTiny) cleanup(ctx context.Context, bigChange *BigChange) {
 	log := LoggerFromContext(ctx)
 	log.Info("remove all branches and PRs")
 
-	_ = bit.gitCheckout(ctx, bigChange.Settings.MainBranch)
+	_ = bit.gitOps.gitCheckout(ctx, bigChange.Settings.MainBranch)
 	for _, domain := range bigChange.Domains {
 		if domain.Branch == nil {
 			continue
 		}
-		_ = bit.gitDeleteBranch(ctx, domain.Branch.name)
-		_ = bit.gitDeleteRemoteBranch(ctx, bigChange.Settings.Remote, domain.Branch.name)
+		_ = bit.gitOps.gitDeleteBranch(ctx, domain.Branch.name)
+		_ = bit.gitOps.gitDeleteRemoteBranch(ctx, bigChange.Settings.Remote, domain.Branch.name)
 	}
 }
