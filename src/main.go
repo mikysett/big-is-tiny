@@ -58,8 +58,8 @@ type Branch struct {
 }
 
 type PullRequest struct {
-	name        string
-	description string
+	title string
+	body  string
 }
 
 type ctxLogger struct{}
