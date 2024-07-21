@@ -136,7 +136,10 @@ func main() {
 	}
 }
 
-const usage = `Usage of big-is-tiny:
+const usage = `Usage: bit [-v | --verbose] [-cleanup] [-dryrun] [-p | --platform] [-h | --help] <path to config file>
+
+If not specified the default path to the config file is './bit_config.json'
+
   -cleanup
         delete branches and PRs
   -v, --verbose
@@ -158,7 +161,7 @@ func getFlags(progName string, args []string) (*Flags, error) {
 	rawFlags.BoolVar(&cleanup, "cleanup", false, "delete branches and PRs")
 	rawFlags.BoolVar(&verbose, "verbose", false, "set logs to DEBUG level")
 	rawFlags.BoolVar(&verbose, "v", false, "set logs to DEBUG level")
-	rawFlags.BoolVar(&verbose, "dryrun", false, "do not create branches or PRs")
+	rawFlags.BoolVar(&dryRun, "dryrun", false, "do not create branches or PRs")
 	rawFlags.StringVar(&rawPlatform, "platform", "github", "platform used for PRs, can be `github` (default) or `azure`")
 	rawFlags.StringVar(&rawPlatform, "p", "github", "platform used for PRs, can be `github` (default) or `azure`")
 	rawFlags.Usage = func() { fmt.Fprint(os.Stderr, usage) }
@@ -179,10 +182,10 @@ func getFlags(progName string, args []string) (*Flags, error) {
 		DryRun:   dryRun,
 		Platform: platform,
 	}
-	if configPath := flag.Arg(0); configPath != "" {
+	if configPath := rawFlags.Arg(0); configPath != "" {
 		flags.ConfigPath = configPath
 	} else {
-		flags.ConfigPath = "config.json"
+		flags.ConfigPath = "bit_config.json"
 	}
 
 	return flags, nil
