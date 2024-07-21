@@ -150,6 +150,20 @@ var runTests = []struct {
 		},
 		expectedErr: fmt.Errorf("gitPushSetUpstream failed"),
 	},
+	{
+		description: "Fail on createPr",
+		given: given{
+			chdirWithLogs: fixtureChdirWithLogs(),
+			flags:         fixtureFlags(),
+			gitOps: fixtureGitOps(func(g *GitOps) {
+				g.createPr = func(ctx context.Context, s1 *Settings, s2, s3, s4 string) (string, error) {
+					return "", fmt.Errorf("createPr failed")
+				}
+			}),
+			config: fixtureBigChange(),
+		},
+		expectedErr: fmt.Errorf("createPr failed"),
+	},
 }
 
 func TestRun(t *testing.T) {

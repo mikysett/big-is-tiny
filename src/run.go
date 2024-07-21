@@ -65,8 +65,7 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 			return err
 		}
 
-		// TODO: create the pull request
-		err = createPullRequest(ctx, domain, config.Settings)
+		domain.PullRequest.url, err = bit.createPullRequest(ctx, domain, config.Settings)
 		if err != nil {
 			return err
 		}
@@ -105,8 +104,15 @@ func fileChangedInDomain(domainPath string, changedFiles []string) bool {
 	return false
 }
 
-func (bit *BigIsTiny) createBranch(ctx context.Context, domain *Domain, settings *Settings) error {
-	err := bit.gitOps.gitCheckoutNewBranch(ctx, domain.Branch.name)
+func (bit *BigIsTiny) createBranch(ctx context.Context, domain *Domain, settings *Settings) (err error) {
+	defer func() {
+		if err != nil {
+			log := LoggerFromContext(ctx)
+			log.Error("failed to create Branch", "branch", domain.Branch.name)
+		}
+	}()
+
+	err = bit.gitOps.gitCheckoutNewBranch(ctx, domain.Branch.name)
 	if err != nil {
 		return err
 	}
@@ -135,15 +141,13 @@ func (bit *BigIsTiny) createBranch(ctx context.Context, domain *Domain, settings
 	return nil
 }
 
-func createPullRequest(ctx context.Context, domain *Domain, settings *Settings) (err error) {
-	defer func() {
-		if err != nil {
-			log := LoggerFromContext(ctx)
-			log.Error("failed to create Pull Request", "error", err)
-		}
-	}()
+func (bit *BigIsTiny) createPullRequest(ctx context.Context, domain *Domain, settings *Settings) (url string, err error) {
+	url, err = bit.gitOps.createPr(ctx, settings, domain.Branch.name, domain.PullRequest.title, domain.PullRequest.body)
+	if err != nil {
+		log := LoggerFromContext(ctx)
+		log.Error("failed to create Pull Request", "branch", domain.Branch.name)
+		return "", err
+	}
 
-	_, err = GitHubCreatePr(ctx, settings, domain.Branch.name, domain.PullRequest.title, domain.PullRequest.body)
-
-	return nil
+	return url, nil
 }
