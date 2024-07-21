@@ -46,13 +46,6 @@ const (
 	Teams
 )
 
-type Platform int
-
-const (
-	Azure Platform = iota
-	GitHub
-)
-
 type Branch struct {
 	name string
 }
@@ -60,6 +53,7 @@ type Branch struct {
 type PullRequest struct {
 	title string
 	body  string
+	url   string
 }
 
 type ctxLogger struct{}
@@ -76,6 +70,7 @@ type GitZeroArgsFunc func(context.Context) error
 type GitOneArgStringFunc func(context.Context, string) error
 type GitTwoArgsStringFunc func(context.Context, string, string) error
 type GitStatusFunc func(context.Context) ([]byte, error)
+type CreatePrFunc func(context.Context, *Settings, string, string, string) (string, error)
 
 type BigIsTiny struct {
 	chdirWithLogs func(context.Context, string) error
@@ -94,6 +89,7 @@ type GitOps struct {
 	gitCheckoutFiles      GitOneArgStringFunc
 	gitReset              GitZeroArgsFunc
 	gitPushSetUpstream    GitTwoArgsStringFunc
+	createPr              CreatePrFunc
 }
 
 func main() {
@@ -126,6 +122,7 @@ func main() {
 			gitCheckoutFiles:      gitCheckoutFiles,
 			gitReset:              gitReset,
 			gitPushSetUpstream:    gitPushSetUpstream,
+			createPr:              GetCreatePrForPlatform(flags.Platform),
 		},
 	}
 
