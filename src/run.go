@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"strings"
 )
 
@@ -53,8 +52,8 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 			name: generateFromTemplate(domain, config.Settings.BranchNameTemplate),
 		}
 		domain.PullRequest = &PullRequest{
-			name:        generateFromTemplate(domain, config.Settings.PrNameTemplate),
-			description: generateFromTemplate(domain, config.Settings.PrDescTemplate),
+			title: generateFromTemplate(domain, config.Settings.PrNameTemplate),
+			body:  generateFromTemplate(domain, config.Settings.PrDescTemplate),
 		}
 
 		if bit.flags.Cleanup {
@@ -67,10 +66,10 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 		}
 
 		// TODO: create the pull request
-		// domain.PullRequest, err = createPullRequest(ctx, domain, bigChange.Settings)
-		// if err != nil {
-		// 	return err
-		// }
+		err = createPullRequest(ctx, domain, config.Settings)
+		if err != nil {
+			return err
+		}
 	}
 
 	if bit.flags.Cleanup {
@@ -136,12 +135,15 @@ func (bit *BigIsTiny) createBranch(ctx context.Context, domain *Domain, settings
 	return nil
 }
 
-func createPullRequest(ctx context.Context, domain *Domain, settings *Settings) (pr *PullRequest, err error) {
+func createPullRequest(ctx context.Context, domain *Domain, settings *Settings) (err error) {
 	defer func() {
 		if err != nil {
 			log := LoggerFromContext(ctx)
 			log.Error("failed to create Pull Request", "error", err)
 		}
 	}()
-	return nil, fmt.Errorf("not implemented")
+
+	_, err = GitHubCreatePr(ctx, settings, domain.Branch.name, domain.PullRequest.title, domain.PullRequest.body)
+
+	return nil
 }
