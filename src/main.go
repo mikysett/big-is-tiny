@@ -20,11 +20,11 @@ type Settings struct {
 	IsDryRun           bool
 	IsDraftPrs         bool
 	RepoPath           string
+	Platform           Platform
 	BranchNameTemplate string
 	CommitMsgTemplate  string
 	PrNameTemplate     string
-	PrDescription      string
-	Platform           Platform
+	PrDescTemplate     string
 }
 
 type Domain struct {
@@ -61,7 +61,8 @@ type Branch struct {
 }
 
 type PullRequest struct {
-	name string
+	name        string
+	description string
 }
 
 type ctxLogger struct{}
