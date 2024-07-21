@@ -23,7 +23,7 @@ install:
 build:		$(NAME)
 			printf "$(WHT)[$(GRN)$(NAME) PROGRAM COMPILED$(WHT)]\n"
 
-all:		build install test
+all:		test build install
 
 clean:
 			$(RM) bin $(DIR_S)/cover.out $(DIR_S)/cover.html
