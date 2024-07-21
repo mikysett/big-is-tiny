@@ -12,6 +12,7 @@ func fixtureFlags(mods ...func(*Flags)) *Flags {
 		Verbose:    false,
 		DryRun:     false,
 		ConfigPath: "",
+		Platform:   Platform(GitHub),
 	}
 	for _, mod := range mods {
 		mod(flags)
@@ -31,7 +32,6 @@ func fixtureBigChange(mods ...func(*BigChange)) *BigChange {
 			CommitMsgTemplate:  "implement new feature for {{domain_name}} at {{team_name_1}}({{team_url_1}}) and {{team_name_2}}({{team_url_2}})",
 			PrNameTemplate:     "{{domain_id}} {{domain_name}}: Big change split",
 			PrDescTemplate:     "This change refers to this refactor for domain {{domain_id}} {{domain_name}}: https://example.com",
-			Platform:           Platform(Azure),
 		},
 		Domains: []*Domain{
 			{

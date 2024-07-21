@@ -19,7 +19,6 @@ type Settings struct {
 	BranchToSplit      string
 	IsDraftPrs         bool
 	RepoPath           string
-	Platform           Platform
 	BranchNameTemplate string
 	CommitMsgTemplate  string
 	PrNameTemplate     string
@@ -71,6 +70,7 @@ type Flags struct {
 	Verbose    bool
 	DryRun     bool
 	ConfigPath string
+	Platform   Platform
 }
 
 type GitZeroArgsFunc func(context.Context) error
@@ -80,7 +80,7 @@ type GitStatusFunc func(context.Context) ([]byte, error)
 
 type BigIsTiny struct {
 	chdirWithLogs func(context.Context, string) error
-	flags         Flags
+	flags         *Flags
 	gitOps        *GitOps
 }
 
@@ -98,7 +98,12 @@ type GitOps struct {
 }
 
 func main() {
-	flags := getFlags()
+	flags, err := getFlags(os.Args[0], os.Args[1:])
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	log := newLogger(flags.Verbose)
 	ctx := ContextWithLogger(context.Background(), log)
 
@@ -138,23 +143,41 @@ const usage = `Usage of big-is-tiny:
         set logs to DEBUG level
   -dryrun
         do not create branches or PRs
+  -p, --platform
+		platform used for PRs, can be "github" (default) or "azure"
   -h, --help
         print this help information
 `
 
-func getFlags() Flags {
-	var verbose, cleanup, dryRun bool
-	flag.BoolVar(&cleanup, "cleanup", false, "delete branches and PRs")
-	flag.BoolVar(&verbose, "verbose", false, "set logs to DEBUG level")
-	flag.BoolVar(&verbose, "v", false, "set logs to DEBUG level")
-	flag.BoolVar(&verbose, "dryrun", false, "do not create branches or PRs")
-	flag.Usage = func() { fmt.Fprint(os.Stderr, usage) }
-	flag.Parse()
+func getFlags(progName string, args []string) (*Flags, error) {
+	rawFlags := flag.NewFlagSet(progName, flag.ExitOnError)
 
-	flags := Flags{
-		Cleanup: cleanup,
-		Verbose: verbose,
-		DryRun:  dryRun,
+	var verbose, cleanup, dryRun bool
+	var rawPlatform string
+	var platform Platform
+	rawFlags.BoolVar(&cleanup, "cleanup", false, "delete branches and PRs")
+	rawFlags.BoolVar(&verbose, "verbose", false, "set logs to DEBUG level")
+	rawFlags.BoolVar(&verbose, "v", false, "set logs to DEBUG level")
+	rawFlags.BoolVar(&verbose, "dryrun", false, "do not create branches or PRs")
+	rawFlags.StringVar(&rawPlatform, "platform", "github", "platform used for PRs, can be `github` (default) or `azure`")
+	rawFlags.StringVar(&rawPlatform, "p", "github", "platform used for PRs, can be `github` (default) or `azure`")
+	rawFlags.Usage = func() { fmt.Fprint(os.Stderr, usage) }
+	rawFlags.Parse(args)
+
+	switch rawPlatform {
+	case "github":
+		platform = Platform(GitHub)
+	case "azure":
+		platform = Platform(Azure)
+	default:
+		return nil, fmt.Errorf("platform '%s' is not supported", rawPlatform)
+	}
+
+	flags := &Flags{
+		Cleanup:  cleanup,
+		Verbose:  verbose,
+		DryRun:   dryRun,
+		Platform: platform,
 	}
 	if configPath := flag.Arg(0); configPath != "" {
 		flags.ConfigPath = configPath
@@ -162,7 +185,7 @@ func getFlags() Flags {
 		flags.ConfigPath = "config.json"
 	}
 
-	return flags
+	return flags, nil
 }
 
 func newLogger(verbose bool) *slog.Logger {

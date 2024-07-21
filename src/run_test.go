@@ -157,7 +157,7 @@ func TestRun(t *testing.T) {
 		t.Run(tt.description, func(t *testing.T) {
 			bit := &BigIsTiny{
 				chdirWithLogs: tt.given.chdirWithLogs,
-				flags:         *tt.given.flags,
+				flags:         tt.given.flags,
 				gitOps:        tt.given.gitOps,
 			}
 			gotErr := bit.run(context.Background(), tt.given.config)

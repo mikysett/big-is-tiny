@@ -14,12 +14,11 @@ func setupConfig(ctx context.Context, configPath string) (*BigChange, error) {
 			Remote:             "origin",
 			BranchToSplit:      "big-change-to-split",
 			IsDraftPrs:         false,
-			RepoPath:           "../../test_repo",
+			RepoPath:           "./",
 			BranchNameTemplate: "bit-{{domain_name}}-big-change-split",
 			CommitMsgTemplate:  "implement new feature for {{domain_name}} at {{team_name_1}}({{team_url_1}}) and {{team_name_2}}({{team_url_2}})",
 			PrNameTemplate:     "{{domain_id}} {{domain_name}}: Big change split",
 			PrDescTemplate:     "This change refers to this refactor for domain {{domain_id}} {{domain_name}}: https://example.com",
-			Platform:           Platform(Azure),
 		},
 		Domains: []*Domain{
 			{
