@@ -17,7 +17,6 @@ type Settings struct {
 	MainBranch         string
 	Remote             string
 	BranchToSplit      string
-	IsDryRun           bool
 	IsDraftPrs         bool
 	RepoPath           string
 	Platform           Platform
@@ -70,6 +69,7 @@ type ctxLogger struct{}
 type Flags struct {
 	Cleanup    bool
 	Verbose    bool
+	DryRun     bool
 	ConfigPath string
 }
 
@@ -99,8 +99,15 @@ type GitOps struct {
 
 func main() {
 	flags := getFlags()
+	log := newLogger(flags.Verbose)
+	ctx := ContextWithLogger(context.Background(), log)
 
-	ctx := ContextWithLogger(context.Background(), newLogger(flags.Verbose))
+	bigChange, err := setupConfig(ctx, flags.ConfigPath)
+	if err != nil {
+		os.Exit(1)
+	}
+	log.Debug("config extracted from config file", "bigChange", bigChange)
+
 	bigIsTiny := BigIsTiny{
 		chdirWithLogs: chdirWithLogs,
 		flags:         flags,
@@ -118,7 +125,7 @@ func main() {
 		},
 	}
 
-	err := bigIsTiny.run(ctx)
+	err = bigIsTiny.run(ctx, bigChange)
 	if err != nil {
 		os.Exit(1)
 	}
@@ -129,22 +136,25 @@ const usage = `Usage of big-is-tiny:
         delete branches and PRs
   -v, --verbose
         set logs to DEBUG level
+  -dryrun
+        do not create branches or PRs
   -h, --help
         print this help information
 `
 
 func getFlags() Flags {
-	var verbose bool
-	var cleanup bool
+	var verbose, cleanup, dryRun bool
 	flag.BoolVar(&cleanup, "cleanup", false, "delete branches and PRs")
 	flag.BoolVar(&verbose, "verbose", false, "set logs to DEBUG level")
 	flag.BoolVar(&verbose, "v", false, "set logs to DEBUG level")
+	flag.BoolVar(&verbose, "dryrun", false, "do not create branches or PRs")
 	flag.Usage = func() { fmt.Fprint(os.Stderr, usage) }
 	flag.Parse()
 
 	flags := Flags{
 		Cleanup: cleanup,
 		Verbose: verbose,
+		DryRun:  dryRun,
 	}
 	if configPath := flag.Arg(0); configPath != "" {
 		flags.ConfigPath = configPath

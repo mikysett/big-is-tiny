@@ -10,6 +10,7 @@ func fixtureFlags(mods ...func(*Flags)) *Flags {
 	flags := &Flags{
 		Cleanup:    false,
 		Verbose:    false,
+		DryRun:     false,
 		ConfigPath: "",
 	}
 	for _, mod := range mods {

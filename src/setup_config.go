@@ -13,7 +13,6 @@ func setupConfig(ctx context.Context, configPath string) (*BigChange, error) {
 			MainBranch:         "main",
 			Remote:             "origin",
 			BranchToSplit:      "big-change-to-split",
-			IsDryRun:           true,
 			IsDraftPrs:         false,
 			RepoPath:           "../../test_repo",
 			BranchNameTemplate: "bit-{{domain_name}}-big-change-split",

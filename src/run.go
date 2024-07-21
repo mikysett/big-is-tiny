@@ -6,16 +6,8 @@ import (
 	"strings"
 )
 
-func (bit *BigIsTiny) run(ctx context.Context) (err error) {
-	log := LoggerFromContext(ctx)
-
-	bigChange, err := setupConfig(ctx, bit.flags.ConfigPath)
-	if err != nil {
-		return err
-	}
-	log.Debug("config extracted from config file", "bigChange", bigChange)
-
-	err = bit.chdirWithLogs(ctx, bigChange.Settings.RepoPath)
+func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
+	err = bit.chdirWithLogs(ctx, config.Settings.RepoPath)
 	if err != nil {
 		return err
 	}
@@ -23,18 +15,18 @@ func (bit *BigIsTiny) run(ctx context.Context) (err error) {
 	// TODO: add a defer here to cleanup branches, PRs and un-staged files in case of failure or success accordingly
 	defer func() {
 		if err != nil {
-			bit.cleanup(ctx, bigChange)
+			bit.cleanup(ctx, config)
 		}
 	}()
 
 	// All branches have need to be checked out from the main branch
-	err = bit.gitOps.gitCheckout(ctx, bigChange.Settings.MainBranch)
+	err = bit.gitOps.gitCheckout(ctx, config.Settings.MainBranch)
 	if err != nil {
 		return err
 	}
 
 	// We fetch the files from the change we are working on
-	err = bit.gitOps.gitCheckoutFiles(ctx, bigChange.Settings.BranchToSplit)
+	err = bit.gitOps.gitCheckoutFiles(ctx, config.Settings.BranchToSplit)
 	if err != nil {
 		return err
 	}
@@ -50,25 +42,26 @@ func (bit *BigIsTiny) run(ctx context.Context) (err error) {
 	if err != nil {
 		return err
 	}
+	log := LoggerFromContext(ctx)
 	log.Debug("changed files", "files", changedFiles)
 
-	for _, domain := range bigChange.Domains {
+	for _, domain := range config.Domains {
 		if !fileChangedInDomain(domain.Path, changedFiles) {
 			continue
 		}
 		domain.Branch = &Branch{
-			name: generateFromTemplate(domain, bigChange.Settings.BranchNameTemplate),
+			name: generateFromTemplate(domain, config.Settings.BranchNameTemplate),
 		}
 		domain.PullRequest = &PullRequest{
-			name:        generateFromTemplate(domain, bigChange.Settings.PrNameTemplate),
-			description: generateFromTemplate(domain, bigChange.Settings.PrDescTemplate),
+			name:        generateFromTemplate(domain, config.Settings.PrNameTemplate),
+			description: generateFromTemplate(domain, config.Settings.PrDescTemplate),
 		}
 
 		if bit.flags.Cleanup {
 			continue
 		}
 
-		err = bit.createBranch(ctx, domain, bigChange.Settings)
+		err = bit.createBranch(ctx, domain, config.Settings)
 		if err != nil {
 			return err
 		}
@@ -81,7 +74,7 @@ func (bit *BigIsTiny) run(ctx context.Context) (err error) {
 	}
 
 	if bit.flags.Cleanup {
-		bit.cleanup(ctx, bigChange)
+		bit.cleanup(ctx, config)
 	}
 
 	return nil
