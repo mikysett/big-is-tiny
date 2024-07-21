@@ -14,10 +14,14 @@ func GitHubCreatePr(ctx context.Context, settings *Settings, head, title, body s
 		prFlags = append(prFlags, "-d")
 	}
 
-	resp, err := runCmd(ctx, "gh", prFlags...)
-
+	_, err := runCmd(ctx, "gh", prFlags...)
 	if err != nil {
 		return "", err
 	}
-	return string(resp[:]), nil
+
+	prUrl, err := runCmd(ctx, "gh", "pr", "view", head, "--json", "url", "--template", "'{{.url}}'")
+	if err != nil {
+		return "", err
+	}
+	return string(prUrl[:]), nil
 }
