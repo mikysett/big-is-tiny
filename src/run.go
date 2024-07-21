@@ -59,6 +59,10 @@ func (bit *BigIsTiny) run(ctx context.Context) (err error) {
 		domain.Branch = &Branch{
 			name: generateFromTemplate(domain, bigChange.Settings.BranchNameTemplate),
 		}
+		domain.PullRequest = &PullRequest{
+			name:        generateFromTemplate(domain, bigChange.Settings.PrNameTemplate),
+			description: generateFromTemplate(domain, bigChange.Settings.PrDescTemplate),
+		}
 
 		if bit.flags.Cleanup {
 			continue
