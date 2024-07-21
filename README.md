@@ -8,6 +8,8 @@ BiT is a basic and simple tool to split your big branches into smaller PR to imp
 - Cleanup mode to delete the created branches/PRs
 - Dry-run mode to evaluate the changes before to apply them
 - Create PRs as draft to refine them before asking reviews
+- Templates for commit messages, PRs and branch names
+- Supported Platforms: `GitHub`, `Azure`
 - Customizable with a `config.json` file
 
 ## How to install it
@@ -25,7 +27,18 @@ Available `make` targets at the root of the repo:
 
 - [Download and install Golang](https://go.dev/doc/install)
 - [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- Depending on the chosen platform for the Pull Requests
+  - [GitHub CLI](https://cli.github.com/)
+  - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 
 ## Limits and known issues
 
 - BiT has only been tested on Linux
+
+## License
+
+MIT license
+
+## Contributing
+
+Contributions are welcome, please create issues or open PRs following usual best practices and common sense.
