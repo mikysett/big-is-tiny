@@ -14,7 +14,7 @@ If not specified the default path to the config file is './bit_config.json'
         delete branches and PRs
   -v, --verbose
         set logs to DEBUG level
-  -dryrun
+  -dry-run
         do not create branches or PRs
   -p, --platform
 		platform used for PRs, can be "github" (default) or "azure"
@@ -31,7 +31,7 @@ func getFlags(progName string, args []string) (*Flags, error) {
 	rawFlags.BoolVar(&cleanup, "cleanup", false, "delete branches and PRs")
 	rawFlags.BoolVar(&verbose, "verbose", false, "set logs to DEBUG level")
 	rawFlags.BoolVar(&verbose, "v", false, "set logs to DEBUG level")
-	rawFlags.BoolVar(&dryRun, "dryrun", false, "do not create branches or PRs")
+	rawFlags.BoolVar(&dryRun, "dry-run", false, "do not create branches or PRs")
 	rawFlags.StringVar(&rawPlatform, "platform", "github", "platform used for PRs, can be `github` (default) or `azure`")
 	rawFlags.StringVar(&rawPlatform, "p", "github", "platform used for PRs, can be `github` (default) or `azure`")
 	rawFlags.Usage = func() { fmt.Fprint(os.Stderr, usage) }
