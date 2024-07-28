@@ -6,8 +6,9 @@ import (
 	"strings"
 )
 
-func generateFromTemplate(domain *Domain, template string) string {
+func (bigChange *BigChange) generateFromTemplate(domain *Domain, template string) string {
 	replacements := []string{
+		"{{bit_id}}", bigChange.Id,
 		"{{domain_name}}", domain.Name,
 		"{{domain_id}}", domain.Id,
 	}

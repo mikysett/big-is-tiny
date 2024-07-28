@@ -44,18 +44,18 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 			continue
 		}
 		domain.Branch = &Branch{
-			name: generateFromTemplate(domain, config.Settings.BranchNameTemplate),
+			name: config.generateFromTemplate(domain, config.Settings.BranchNameTemplate),
 		}
 		domain.PullRequest = &PullRequest{
-			title: generateFromTemplate(domain, config.Settings.PrNameTemplate),
-			body:  generateFromTemplate(domain, config.Settings.PrDescTemplate),
+			title: config.generateFromTemplate(domain, config.Settings.PrNameTemplate),
+			body:  config.generateFromTemplate(domain, config.Settings.PrDescTemplate),
 		}
 
 		if bit.flags.Cleanup {
 			continue
 		}
 
-		err = bit.createBranch(ctx, domain, config.Settings)
+		err = bit.createBranch(ctx, config, domain, config.Settings)
 		if err != nil {
 			return err
 		}
@@ -99,7 +99,7 @@ func fileChangedInDomain(domainPath string, changedFiles []string) bool {
 	return false
 }
 
-func (bit *BigIsTiny) createBranch(ctx context.Context, domain *Domain, settings *Settings) (err error) {
+func (bit *BigIsTiny) createBranch(ctx context.Context, config *BigChange, domain *Domain, settings *Settings) (err error) {
 	defer func() {
 		if err != nil {
 			log := LoggerFromContext(ctx)
@@ -117,7 +117,7 @@ func (bit *BigIsTiny) createBranch(ctx context.Context, domain *Domain, settings
 		return err
 	}
 
-	err = bit.gitOps.gitCommit(ctx, generateFromTemplate(domain, settings.CommitMsgTemplate))
+	err = bit.gitOps.gitCommit(ctx, config.generateFromTemplate(domain, settings.CommitMsgTemplate))
 	if err != nil {
 		return err
 	}

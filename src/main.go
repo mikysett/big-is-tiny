@@ -8,6 +8,7 @@ import (
 )
 
 type BigChange struct {
+	Id       string
 	Domains  []*Domain
 	Settings *Settings
 }
