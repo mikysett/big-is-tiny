@@ -6,12 +6,7 @@ import (
 )
 
 func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
-	err = bit.chdirWithLogs(ctx, config.Settings.RepoPath)
-	if err != nil {
-		return err
-	}
-
-	// TODO: add a defer here to cleanup branches, PRs and un-staged files in case of failure or success accordingly
+	// On failure remove the branches created during the split
 	defer func() {
 		if err != nil {
 			bit.cleanup(ctx, config)

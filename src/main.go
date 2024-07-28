@@ -17,7 +17,6 @@ type Settings struct {
 	Remote             string
 	BranchToSplit      string
 	IsDraftPrs         bool
-	RepoPath           string
 	BranchNameTemplate string
 	CommitMsgTemplate  string
 	PrNameTemplate     string
@@ -65,9 +64,8 @@ type GitStatusFunc func(context.Context) ([]byte, error)
 type CreatePrFunc func(context.Context, *Settings, string, string, string) (string, error)
 
 type BigIsTiny struct {
-	chdirWithLogs func(context.Context, string) error
-	flags         *Flags
-	gitOps        *GitOps
+	flags  *Flags
+	gitOps *GitOps
 }
 
 type GitOps struct {
@@ -101,8 +99,7 @@ func main() {
 	log.Debug("config extracted from config file", "bigChange", bigChange)
 
 	bigIsTiny := BigIsTiny{
-		chdirWithLogs: chdirWithLogs,
-		flags:         flags,
+		flags: flags,
 		gitOps: &GitOps{
 			gitCheckout:           gitCheckout,
 			gitCheckoutNewBranch:  gitCheckoutNewBranch,
