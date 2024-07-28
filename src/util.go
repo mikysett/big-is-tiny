@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"strings"
 	"syscall"
@@ -45,19 +44,4 @@ func (bit *BigIsTiny) cleanup(ctx context.Context, bigChange *BigChange) {
 		_ = bit.gitOps.gitDeleteBranch(ctx, domain.Branch.name)
 		_ = bit.gitOps.gitDeleteRemoteBranch(ctx, bigChange.Settings.Remote, domain.Branch.name)
 	}
-}
-
-func (e Communication) String() string {
-	switch e {
-	case Slack:
-		return "Slack"
-	case Teams:
-		return "Teams"
-	default:
-		return fmt.Sprintf("%d", int(e))
-	}
-}
-
-func (s Communication) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.String())
 }

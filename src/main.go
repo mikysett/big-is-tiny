@@ -36,15 +36,7 @@ type Domain struct {
 type Team struct {
 	Name string
 	Url  string
-	Type Communication
 }
-
-type Communication int
-
-const (
-	Slack Communication = iota
-	Teams
-)
 
 type Branch struct {
 	name string

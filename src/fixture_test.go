@@ -42,7 +42,6 @@ func fixtureBigChange(mods ...func(*BigChange)) *BigChange {
 					{
 						Name: "First Team AA",
 						Url:  "https://example_1.com",
-						Type: Communication(Slack),
 					},
 				},
 			},
@@ -54,12 +53,10 @@ func fixtureBigChange(mods ...func(*BigChange)) *BigChange {
 					{
 						Name: "Team BB 1",
 						Url:  "https://example_2.com",
-						Type: Communication(Teams),
 					},
 					{
 						Name: "Team BB 2",
 						Url:  "https://example_2_bis.com",
-						Type: Communication(Slack),
 					},
 				},
 			},
