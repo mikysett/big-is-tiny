@@ -18,7 +18,7 @@ func GetCreatePrForPlatform(p Platform) func(context.Context, *Settings, string,
 	case Platform(GitHub):
 		return GitHubCreatePr
 	case Platform(Azure):
-		panic("platform not implemented")
+		return AzureCreatePr
 	default:
 		panic("unreachable")
 	}
