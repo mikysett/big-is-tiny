@@ -1,0 +1,41 @@
+{
+  "id": "big-change-1",
+  "settings": {
+    "mainBranch": "main",
+    "remote": "origin",
+    "branchToSplit": "big-change-to-split",
+    "isDraftPrs": false,
+    "branchNameTemplate": "bit-{{domain_name}}-big-change-split",
+    "commitMsgTemplate": "implement new feature for {{domain_name}} at {{team_name_1}}({{team_url_1}}) and {{team_name_2}}({{team_url_2}})",
+    "prNameTemplate": "[{{change_id}}] {{domain_id}} {{domain_name}}: Big change split",
+    "prDescTemplate": "This change refers to this refactor for domain {{domain_id}} {{domain_name}}: https://example.com"
+  },
+  "domains": [
+    {
+      "name": "dom1",
+      "id": "AA",
+      "path": "domains/dom1/",
+      "teams": [
+        {
+          "name": "First Team AA",
+          "url": "https://example_1.com"
+        }
+      ]
+    },
+    {
+      "name": "dom2",
+      "id": "BB",
+      "path": "domains/dom2/",
+      "teams": [
+        {
+          "name": "Team BB 1",
+          "url": "https://example_2.com"
+        },
+        {
+          "name": "Team BB 2",
+          "url": "https://example_2_bis.com"
+        }
+      ]
+    }
+  ]
+}
