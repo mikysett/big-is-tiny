@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 )
 
 func gitCheckout(ctx context.Context, branchName string) error {
@@ -60,8 +61,8 @@ func gitCommit(ctx context.Context, message string) error {
 	return nil
 }
 
-func gitCheckoutFiles(ctx context.Context, branchName string) error {
-	_, err := runCmd(ctx, "git", "checkout", "--no-overlay", branchName, "--", ".")
+func gitCheckoutFiles(ctx context.Context, remote string, branchName string) error {
+	_, err := runCmd(ctx, "git", "checkout", "--no-overlay", fmt.Sprintf("%s/%s", remote, branchName), "--", ".")
 	if err != nil {
 		return err
 	}
