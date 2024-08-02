@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-type given struct {
+type givenRun struct {
 	flags  *Flags
 	gitOps *GitOps
 	config *BigChange
@@ -14,12 +14,12 @@ type given struct {
 
 var runTests = []struct {
 	description string
-	given       given
+	given       givenRun
 	expectedErr error
 }{
 	{
 		description: "Happy path",
-		given: given{
+		given: givenRun{
 			flags:  fixtureFlags(),
 			gitOps: fixtureGitOps(),
 			config: fixtureBigChange(),
@@ -27,7 +27,7 @@ var runTests = []struct {
 	},
 	{
 		description: "Don't create branches and PRs on cleanup",
-		given: given{
+		given: givenRun{
 			flags: fixtureFlags(func(f *Flags) {
 				f.Cleanup = true
 			}),
@@ -43,7 +43,7 @@ var runTests = []struct {
 	},
 	{
 		description: "Fail on gitCheckout",
-		given: given{
+		given: givenRun{
 			flags: fixtureFlags(),
 			gitOps: fixtureGitOps(func(g *GitOps) {
 				g.gitCheckout = func(ctx context.Context, s string) error { return fmt.Errorf("gitCheckout failed") }
@@ -54,7 +54,7 @@ var runTests = []struct {
 	},
 	{
 		description: "Fail on gitCheckoutNewBranch",
-		given: given{
+		given: givenRun{
 			flags: fixtureFlags(),
 			gitOps: fixtureGitOps(func(g *GitOps) {
 				g.gitCheckoutNewBranch = func(ctx context.Context, s string) error { return fmt.Errorf("gitCheckoutNewBranch failed") }
@@ -65,7 +65,7 @@ var runTests = []struct {
 	},
 	{
 		description: "Fail on gitStatus",
-		given: given{
+		given: givenRun{
 			flags: fixtureFlags(),
 			gitOps: fixtureGitOps(func(g *GitOps) {
 				g.gitStatus = func(ctx context.Context) ([]byte, error) { return nil, fmt.Errorf("gitStatus failed") }
@@ -76,7 +76,7 @@ var runTests = []struct {
 	},
 	{
 		description: "Fail on gitAdd",
-		given: given{
+		given: givenRun{
 			flags: fixtureFlags(),
 			gitOps: fixtureGitOps(func(g *GitOps) {
 				g.gitAdd = func(ctx context.Context, s string) error { return fmt.Errorf("gitAdd failed") }
@@ -87,7 +87,7 @@ var runTests = []struct {
 	},
 	{
 		description: "Fail on gitCommit",
-		given: given{
+		given: givenRun{
 			flags: fixtureFlags(),
 			gitOps: fixtureGitOps(func(g *GitOps) {
 				g.gitCommit = func(ctx context.Context, s string) error { return fmt.Errorf("gitCommit failed") }
@@ -98,7 +98,7 @@ var runTests = []struct {
 	},
 	{
 		description: "Fail on gitCheckoutFiles",
-		given: given{
+		given: givenRun{
 			flags: fixtureFlags(),
 			gitOps: fixtureGitOps(func(g *GitOps) {
 				g.gitCheckoutFiles = func(ctx context.Context, s string) error { return fmt.Errorf("gitCheckoutFiles failed") }
@@ -109,7 +109,7 @@ var runTests = []struct {
 	},
 	{
 		description: "Fail on gitReset",
-		given: given{
+		given: givenRun{
 			flags: fixtureFlags(),
 			gitOps: fixtureGitOps(func(g *GitOps) {
 				g.gitReset = func(ctx context.Context) error { return fmt.Errorf("gitReset failed") }
@@ -120,7 +120,7 @@ var runTests = []struct {
 	},
 	{
 		description: "Fail on gitPushSetUpstream",
-		given: given{
+		given: givenRun{
 			flags: fixtureFlags(),
 			gitOps: fixtureGitOps(func(g *GitOps) {
 				g.gitPushSetUpstream = func(ctx context.Context, s1, s2 string) error { return fmt.Errorf("gitPushSetUpstream failed") }
@@ -131,7 +131,7 @@ var runTests = []struct {
 	},
 	{
 		description: "Fail on createPr",
-		given: given{
+		given: givenRun{
 			flags: fixtureFlags(),
 			gitOps: fixtureGitOps(func(g *GitOps) {
 				g.createPr = func(ctx context.Context, s1 *Settings, s2, s3, s4 string) (string, error) {
