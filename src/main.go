@@ -93,7 +93,15 @@ func main() {
 	log := newLogger(flags.Verbose)
 	ctx := ContextWithLogger(context.Background(), log)
 
-	bigChange, err := setupConfig(ctx, flags.ConfigPath)
+	jsonConfig, err := os.ReadFile(flags.ConfigPath)
+	if err != nil {
+		log.Error("failed to read config file",
+			"config file path", flags.ConfigPath,
+			"error", err)
+		os.Exit(1)
+	}
+
+	bigChange, err := setupConfig(ctx, jsonConfig)
 	if err != nil {
 		os.Exit(1)
 	}
