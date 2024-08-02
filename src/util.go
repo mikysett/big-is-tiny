@@ -28,9 +28,7 @@ func (bit *BigIsTiny) cleanup(ctx context.Context, bigChange *BigChange) {
 
 	_ = bit.gitOps.gitCheckout(ctx, bigChange.Settings.MainBranch)
 	for _, domain := range bigChange.Domains {
-		if domain.Branch == nil {
-			continue
-		}
+		// Errors are expected to be logged here as branch existence is not checked
 		_ = bit.gitOps.gitDeleteBranch(ctx, domain.Branch.Name)
 		_ = bit.gitOps.gitDeleteRemoteBranch(ctx, bigChange.Settings.Remote, domain.Branch.Name)
 	}
