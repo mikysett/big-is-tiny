@@ -2,10 +2,6 @@ package main
 
 import "context"
 
-func fixtureChdirWithLogs() func(ctx context.Context, path string) error {
-	return func(ctx context.Context, s string) error { return nil }
-}
-
 func fixtureFlags(mods ...func(*Flags)) *Flags {
 	flags := &Flags{
 		Cleanup:    false,
