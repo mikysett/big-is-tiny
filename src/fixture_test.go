@@ -55,6 +55,21 @@ func fixtureBigChange(mods ...func(*BigChange)) *BigChange {
 					},
 				},
 			},
+			{
+				Name: "dom3",
+				Id:   "CC",
+				Path: "domains/dom3/",
+				Teams: []Team{
+					{
+						Name: "Team CC 1",
+						Url:  "https://example_2.com",
+					},
+					{
+						Name: "Team CC 2",
+						Url:  "https://example_2_bis.com",
+					},
+				},
+			},
 		},
 	}
 	for _, mod := range mods {
