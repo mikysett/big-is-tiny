@@ -148,6 +148,13 @@ func ContextWithLogger(ctx context.Context, log *slog.Logger) context.Context {
 	return context.WithValue(ctx, ctxLogger{}, log)
 }
 
+func ContextWithSilentLogger(ctx context.Context) context.Context {
+	dummyHandler := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: slog.Level(slog.LevelError + 1)})
+	dummyLogger := slog.New(dummyHandler)
+
+	return context.WithValue(ctx, ctxLogger{}, dummyLogger)
+}
+
 func LoggerFromContext(ctx context.Context) *slog.Logger {
 	if l, ok := ctx.Value(ctxLogger{}).(*slog.Logger); ok {
 		return l

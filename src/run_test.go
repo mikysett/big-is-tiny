@@ -145,13 +145,15 @@ var runTests = []struct {
 }
 
 func TestRun(t *testing.T) {
+	ctxWithSilentLogger := ContextWithSilentLogger(context.Background())
+
 	for _, tt := range runTests {
 		t.Run(tt.description, func(t *testing.T) {
 			bit := &BigIsTiny{
 				flags:  tt.given.flags,
 				gitOps: tt.given.gitOps,
 			}
-			gotErr := bit.run(context.Background(), tt.given.config)
+			gotErr := bit.run(ctxWithSilentLogger, tt.given.config)
 
 			// We get an error when we don't expect it or we don't get one when we expect it
 			if tt.expectedErr != nil != (gotErr != nil) {

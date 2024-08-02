@@ -77,9 +77,11 @@ func marshalBigChange(bigChange *BigChange) []byte {
 }
 
 func TestSetupConfig(t *testing.T) {
+	ctxWithSilentLogger := ContextWithSilentLogger(context.Background())
+
 	for _, tt := range setupConfigTests {
 		t.Run(tt.description, func(t *testing.T) {
-			gotBigChange, gotErr := setupConfig(context.Background(), tt.given)
+			gotBigChange, gotErr := setupConfig(ctxWithSilentLogger, tt.given)
 
 			// We get an error when we don't expect it or we don't get one when we expect it
 			if tt.expectedErr != nil != (gotErr != nil) {
