@@ -13,13 +13,13 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 		}
 	}()
 
-	// All branches have need to be checked out from the main branch
+	// Checkout to the main branch
 	err = bit.gitOps.gitCheckout(ctx, config.Settings.MainBranch)
 	if err != nil {
 		return err
 	}
 
-	// We fetch the files from the change we are working on
+	// Fetch the files from the change we are working on
 	err = bit.gitOps.gitCheckoutFiles(ctx, config.Settings.BranchToSplit)
 	if err != nil {
 		return err
@@ -36,8 +36,6 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 	if err != nil {
 		return err
 	}
-	log := LoggerFromContext(ctx)
-	log.Debug("changed files", "files", changedFiles)
 
 	for _, domain := range config.Domains {
 		if !fileChangedInDomain(domain.Path, changedFiles) {
@@ -112,6 +110,14 @@ func (bit *BigIsTiny) createBranch(ctx context.Context, config *BigChange, domai
 		return err
 	}
 
+	// We go back to main branch not to change the repository initial state
+	defer func() {
+		checkoutErr := bit.gitOps.gitCheckout(ctx, settings.MainBranch)
+		if checkoutErr != nil {
+			err = checkoutErr
+		}
+	}()
+
 	err = bit.gitOps.gitAdd(ctx, domain.Path)
 	if err != nil {
 		return err
@@ -123,12 +129,6 @@ func (bit *BigIsTiny) createBranch(ctx context.Context, config *BigChange, domai
 	}
 
 	err = bit.gitOps.gitPushSetUpstream(ctx, settings.Remote, domain.Branch.name)
-	if err != nil {
-		return err
-	}
-
-	// We go back to main branch not to change the repository initial state
-	err = bit.gitOps.gitCheckout(ctx, settings.MainBranch)
 	if err != nil {
 		return err
 	}
