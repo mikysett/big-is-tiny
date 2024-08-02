@@ -75,7 +75,7 @@ func fixtureGitOps(mods ...func(*GitOps)) *GitOps {
 		},
 		gitAdd:             func(ctx context.Context, s string) error { return nil },
 		gitCommit:          func(ctx context.Context, s string) error { return nil },
-		gitCheckoutFiles:   func(ctx context.Context, s string) error { return nil },
+		gitCheckoutFiles:   func(ctx context.Context, s1, s2 string) error { return nil },
 		gitReset:           func(ctx context.Context) error { return nil },
 		gitPushSetUpstream: func(ctx context.Context, s1, s2 string) error { return nil },
 		createPr: func(ctx context.Context, s1 *Settings, s2, s3, s4 string) (string, error) {

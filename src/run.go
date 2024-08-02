@@ -19,8 +19,8 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 		return err
 	}
 
-	// Fetch the files from the change we are working on
-	err = bit.gitOps.gitCheckoutFiles(ctx, config.Settings.BranchToSplit)
+	// Fetch the files on remote branch for the changes we are working on
+	err = bit.gitOps.gitCheckoutFiles(ctx, config.Settings.Remote, config.Settings.BranchToSplit)
 	if err != nil {
 		return err
 	}
@@ -42,11 +42,11 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 			continue
 		}
 		domain.Branch = &Branch{
-			name: config.generateFromTemplate(domain, config.Settings.BranchNameTemplate),
+			Name: config.generateFromTemplate(domain, config.Settings.BranchNameTemplate),
 		}
 		domain.PullRequest = &PullRequest{
-			title: config.generateFromTemplate(domain, config.Settings.PrNameTemplate),
-			body:  config.generateFromTemplate(domain, config.Settings.PrDescTemplate),
+			Title: config.generateFromTemplate(domain, config.Settings.PrNameTemplate),
+			Body:  config.generateFromTemplate(domain, config.Settings.PrDescTemplate),
 		}
 
 		if bit.flags.Cleanup {
@@ -58,7 +58,7 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 			return err
 		}
 
-		domain.PullRequest.url, err = bit.createPullRequest(ctx, domain, config.Settings)
+		domain.PullRequest.Url, err = bit.createPullRequest(ctx, domain, config.Settings)
 		if err != nil {
 			return err
 		}
@@ -101,11 +101,11 @@ func (bit *BigIsTiny) createBranch(ctx context.Context, config *BigChange, domai
 	defer func() {
 		if err != nil {
 			log := LoggerFromContext(ctx)
-			log.Error("failed to create Branch", "branch", domain.Branch.name)
+			log.Error("failed to create Branch", "branch", domain.Branch.Name)
 		}
 	}()
 
-	err = bit.gitOps.gitCheckoutNewBranch(ctx, domain.Branch.name)
+	err = bit.gitOps.gitCheckoutNewBranch(ctx, domain.Branch.Name)
 	if err != nil {
 		return err
 	}
@@ -128,7 +128,7 @@ func (bit *BigIsTiny) createBranch(ctx context.Context, config *BigChange, domai
 		return err
 	}
 
-	err = bit.gitOps.gitPushSetUpstream(ctx, settings.Remote, domain.Branch.name)
+	err = bit.gitOps.gitPushSetUpstream(ctx, settings.Remote, domain.Branch.Name)
 	if err != nil {
 		return err
 	}
@@ -137,10 +137,10 @@ func (bit *BigIsTiny) createBranch(ctx context.Context, config *BigChange, domai
 }
 
 func (bit *BigIsTiny) createPullRequest(ctx context.Context, domain *Domain, settings *Settings) (url string, err error) {
-	url, err = bit.gitOps.createPr(ctx, settings, domain.Branch.name, domain.PullRequest.title, domain.PullRequest.body)
+	url, err = bit.gitOps.createPr(ctx, settings, domain.Branch.Name, domain.PullRequest.Title, domain.PullRequest.Body)
 	if err != nil {
 		log := LoggerFromContext(ctx)
-		log.Error("failed to create Pull Request", "branch", domain.Branch.name)
+		log.Error("failed to create Pull Request", "branch", domain.Branch.Name)
 		return "", err
 	}
 
