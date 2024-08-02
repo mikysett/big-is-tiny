@@ -8,7 +8,7 @@ import (
 
 func (bigChange *BigChange) generateFromTemplate(domain *Domain, template string) string {
 	replacements := []string{
-		"{{bit_id}}", bigChange.Id,
+		"{{change_id}}", bigChange.Id,
 		"{{domain_name}}", domain.Name,
 		"{{domain_id}}", domain.Id,
 	}
@@ -31,7 +31,7 @@ func (bit *BigIsTiny) cleanup(ctx context.Context, bigChange *BigChange) {
 		if domain.Branch == nil {
 			continue
 		}
-		_ = bit.gitOps.gitDeleteBranch(ctx, domain.Branch.name)
-		_ = bit.gitOps.gitDeleteRemoteBranch(ctx, bigChange.Settings.Remote, domain.Branch.name)
+		_ = bit.gitOps.gitDeleteBranch(ctx, domain.Branch.Name)
+		_ = bit.gitOps.gitDeleteRemoteBranch(ctx, bigChange.Settings.Remote, domain.Branch.Name)
 	}
 }
