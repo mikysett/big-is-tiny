@@ -1,14 +1,14 @@
 # Big is Tiny (BiT) - Big changes made simple
 
-BiT is a basic and simple tool to split your big branches into smaller PR to improve development speed, reduce reviews times and improve their quality.
+BiT is a basic and simple tool to split your big branches into smaller PRs to improve development speed, reduce reviews times and improve their quality.
 
 ## Key features
 
-- Automatically split a big branch in multiple sub-branches and PRs
+- Automatically split a big branch in multiple sub-branches and PRs based on domains paths
 - Cleanup mode to delete the created branches/PRs
 - Dry-run mode to evaluate the changes before to apply them
 - Create PRs as draft to refine them before asking reviews
-- Templates for commit messages, PRs and branch names
+- Templates for domain based commit messages, PRs and branch names
 - Supported Platforms: `GitHub`, `Azure`
 - Customizable with a `config.json` file
 
@@ -31,13 +31,20 @@ Available `make` targets at the root of the repo:
 
 ### Example of a configuration file
 
-A dummy repository [bit_test_repo](https://github.com/mikysett/bit_test_repo) can be forked and used as a playground.
-
-It will also work with this configuration file.
-
-```json
-
-```
+- You will find example configs in `/example_config` directory
+- A dummy repository [bit_test_repo](https://github.com/mikysett/bit_test_repo) can be forked and used as a playground with those config files
+- Mandatory fields are:
+  - `settings.mainBranch`
+  - `settings.remote`
+  - `settings.branchToSplit`
+  - At least one domain
+  - Domains should always have at least `domains.path`
+- Templates placeholders:
+  - `{{change_id}}`: `id`
+  - `{{domain_id}}`: `domain.id`
+  - `{{domain_name}}`: `domain.name`
+  - `{{team_name_1}}`: `domain.teams[0].name` (notice the template counting starts with `1`)
+  - `{{team_url_1}}`: `Domain.Teams[0].Url`
 
 ## Prerequisites
 
