@@ -8,44 +8,44 @@ import (
 )
 
 type BigChange struct {
-	Id       string
-	Domains  []*Domain
-	Settings *Settings
+	Id       string    `json:"id"`
+	Domains  []*Domain `json:"domains"`
+	Settings *Settings `json:"settings"`
 }
 
 type Settings struct {
-	MainBranch         string
-	Remote             string
-	BranchToSplit      string
-	IsDraftPrs         bool
-	BranchNameTemplate string
-	CommitMsgTemplate  string
-	PrNameTemplate     string
-	PrDescTemplate     string
+	MainBranch         string `json:"mainBranch"`
+	Remote             string `json:"remote"`
+	BranchToSplit      string `json:"branchToSplit"`
+	IsDraftPrs         bool   `json:"isDraftPrs"`
+	BranchNameTemplate string `json:"branchNameTemplate"`
+	CommitMsgTemplate  string `json:"commitMsgTemplate"`
+	PrNameTemplate     string `json:"prNameTemplate"`
+	PrDescTemplate     string `json:"prDescTemplate"`
 }
 
 type Domain struct {
-	Name        string
-	Id          string
-	Path        string
-	Teams       []Team
-	Branch      *Branch
-	PullRequest *PullRequest
+	Name        string       `json:"name"`
+	Id          string       `json:"id"`
+	Path        string       `json:"path"`
+	Teams       []Team       `json:"teams"`
+	Branch      *Branch      `json:"branch"`
+	PullRequest *PullRequest `json:"pullRequest"`
 }
 
 type Team struct {
-	Name string
-	Url  string
+	Name string `json:"name"`
+	Url  string `json:"url"`
 }
 
 type Branch struct {
-	name string
+	Name string `json:"name"`
 }
 
 type PullRequest struct {
-	title string
-	body  string
-	url   string
+	Title string `json:"title"`
+	Body  string `json:"body"`
+	Url   string `json:"url"`
 }
 
 type ctxLogger struct{}
@@ -77,7 +77,7 @@ type GitOps struct {
 	gitStatus             GitStatusFunc
 	gitAdd                GitOneArgStringFunc
 	gitCommit             GitOneArgStringFunc
-	gitCheckoutFiles      GitOneArgStringFunc
+	gitCheckoutFiles      GitTwoArgsStringFunc
 	gitReset              GitZeroArgsFunc
 	gitPushSetUpstream    GitTwoArgsStringFunc
 	createPr              CreatePrFunc
@@ -98,12 +98,12 @@ func main() {
 		log.Error("failed to read config file",
 			"config file path", flags.ConfigPath,
 			"error", err)
-		os.Exit(1)
+		os.Exit(2)
 	}
 
 	bigChange, err := setupConfig(ctx, jsonConfig)
 	if err != nil {
-		os.Exit(1)
+		os.Exit(3)
 	}
 	log.Debug("config extracted from config file", "bigChange", bigChange)
 
@@ -126,7 +126,7 @@ func main() {
 
 	err = bigIsTiny.run(ctx, bigChange)
 	if err != nil {
-		os.Exit(1)
+		os.Exit(4)
 	}
 }
 
@@ -148,16 +148,17 @@ func ContextWithLogger(ctx context.Context, log *slog.Logger) context.Context {
 	return context.WithValue(ctx, ctxLogger{}, log)
 }
 
-func ContextWithSilentLogger(ctx context.Context) context.Context {
-	dummyHandler := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: slog.Level(slog.LevelError + 1)})
-	dummyLogger := slog.New(dummyHandler)
-
-	return context.WithValue(ctx, ctxLogger{}, dummyLogger)
-}
-
 func LoggerFromContext(ctx context.Context) *slog.Logger {
 	if l, ok := ctx.Value(ctxLogger{}).(*slog.Logger); ok {
 		return l
 	}
 	return newLogger(false)
+}
+
+// To reduce noise in unit tests
+func ContextWithSilentLogger(ctx context.Context) context.Context {
+	dummyHandler := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: slog.Level(slog.LevelError + 1)})
+	dummyLogger := slog.New(dummyHandler)
+
+	return context.WithValue(ctx, ctxLogger{}, dummyLogger)
 }
