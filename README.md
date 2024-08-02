@@ -14,6 +14,7 @@ BiT is a basic and simple tool to split your big branches into smaller PR to imp
 
 ## How to install it
 
+Clone the repository locally: `git clone git@github.com:mikysett/big-is-tiny.git`.
 Available `make` targets at the root of the repo:
 
 - `make install`: install `bit` globally on your machine
@@ -23,17 +24,35 @@ Available `make` targets at the root of the repo:
 
 ## How to use it
 
+- Install BiT globally
+- `cd` at the root of the repository concerned by the change
+- Run `bit 'path/to/config.json'`
+- For all available flags run `bit --help`
+
+### Example of a configuration file
+
+A dummy repository [bit_test_repo](https://github.com/mikysett/bit_test_repo) can be forked and used as a playground.
+
+It will also work with this configuration file.
+
+```json
+
+```
+
 ## Prerequisites
 
-- [Download and install Golang](https://go.dev/doc/install)
 - [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- Depending on the chosen platform for the Pull Requests
+- [Download and install Golang](https://go.dev/doc/install)
+- Depending on the chosen platform for the Pull Requests:
   - [GitHub CLI](https://cli.github.com/)
   - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 
 ## Limits and known issues
 
-- BiT has only been tested on Linux
+- BiT has only been tested on Linux and MacOS
+- Under the hood vanilla `git` commands are called, this made it faster to implement but brings limitations in performance and stability (if `git` changes some of its returned values BiT may break)
+- Paths are plain strings, this limits portability
+- The changes are not done in a transaction style, which means if the operation fails mid-way you may find the repository in an unwanted state and you may need to do manual cleanup or run `bit -cleanup path/to/your/config.json`
 
 ## License
 
