@@ -50,6 +50,14 @@ type PullRequest struct {
 
 type ctxLogger struct{}
 
+type ExportResultsFunc func(context.Context, *Flags, *BigChange) error
+
+type BigIsTiny struct {
+	flags         *Flags
+	exportResults ExportResultsFunc
+	gitOps        *GitOps
+}
+
 type Flags struct {
 	Cleanup    bool
 	Verbose    bool
@@ -63,11 +71,6 @@ type GitOneArgStringFunc func(context.Context, string) error
 type GitTwoArgsStringFunc func(context.Context, string, string) error
 type GitStatusFunc func(context.Context) ([]byte, error)
 type CreatePrFunc func(context.Context, *Settings, string, string, string) (string, error)
-
-type BigIsTiny struct {
-	flags  *Flags
-	gitOps *GitOps
-}
 
 type GitOps struct {
 	gitCheckout           GitOneArgStringFunc
@@ -108,7 +111,8 @@ func main() {
 	log.Debug("config extracted from config file", "bigChange", bigChange)
 
 	bigIsTiny := BigIsTiny{
-		flags: flags,
+		flags:         flags,
+		exportResults: exportResults,
 		gitOps: &GitOps{
 			gitCheckout:           gitCheckout,
 			gitCheckoutNewBranch:  gitCheckoutNewBranch,

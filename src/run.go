@@ -69,6 +69,11 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 		}
 	}
 
+	err = bit.exportResults(ctx, bit.flags, config)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -146,4 +151,8 @@ func (bit *BigIsTiny) createPullRequest(ctx context.Context, domain *Domain, set
 	}
 
 	return url, nil
+}
+
+func exportResults(ctx context.Context, flags *Flags, config *BigChange) error {
+	return nil
 }
