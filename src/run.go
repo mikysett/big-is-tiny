@@ -152,7 +152,3 @@ func (bit *BigIsTiny) createPullRequest(ctx context.Context, domain *Domain, set
 
 	return url, nil
 }
-
-func exportResults(ctx context.Context, flags *Flags, config *BigChange) error {
-	return nil
-}
