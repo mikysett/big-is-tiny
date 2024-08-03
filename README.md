@@ -8,7 +8,6 @@ BiT is a basic and simple tool to split your big branches into smaller PRs to im
 
 - Automatically split a big branch in multiple sub-branches and PRs based on domains paths
 - Cleanup mode to delete the created branches/PRs
-- Dry-run mode to evaluate the changes before to apply them
 - Create PRs as draft to refine them before asking reviews
 - Templates for domain based commit messages, PRs and branch names
 - Supported Platforms: `GitHub`, `Azure`

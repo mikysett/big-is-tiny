@@ -21,11 +21,10 @@ var flagsTests = []struct {
 	{
 		description: "Happy path - all flags passed (long versions)",
 		args: []string{
-			"-verbose", "-cleanup", "-dry-run", "-platform", "azure", "anotherConfig.json",
+			"-verbose", "-cleanup", "-platform", "azure", "anotherConfig.json",
 		},
 		expectedFlags: fixtureFlags(func(f *Flags) {
 			f.Cleanup = true
-			f.DryRun = true
 			f.Verbose = true
 			f.Platform = Platform(Azure)
 			f.ConfigPath = "anotherConfig.json"

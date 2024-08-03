@@ -11,7 +11,6 @@ func fixtureFlags(mods ...func(*Flags)) *Flags {
 	flags := &Flags{
 		Cleanup:    false,
 		Verbose:    false,
-		DryRun:     false,
 		ConfigPath: "bit_config.json",
 		Platform:   Platform(GitHub),
 	}

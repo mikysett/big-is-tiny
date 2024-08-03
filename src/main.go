@@ -61,7 +61,6 @@ type BigIsTiny struct {
 type Flags struct {
 	Cleanup    bool
 	Verbose    bool
-	DryRun     bool
 	ConfigPath string
 	Platform   Platform
 }
