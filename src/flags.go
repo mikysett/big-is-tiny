@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-const usage = `Usage: bit [-v | --verbose] [-cleanup] [-dryrun] [-p | --platform] [-h | --help] <path to config file>
+const usage = `Usage: bit [-v | --verbose] [-cleanup] [-p | --platform] [-h | --help] <path to config file>
 
 If not specified the default path to the config file is './bit_config.json'
 
