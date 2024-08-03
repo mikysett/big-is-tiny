@@ -29,6 +29,13 @@ Available `make` targets at the root of the repo:
 - Run `bit 'path/to/config.json'`
 - For all available flags run `bit --help`
 
+## Hints
+
+- It's important that the repo do not have any uncommitted changes at the moment of the execution as those could be added to the generated PRs if they match the paths
+- BiT will fetch the changed files from the remote branch, so if you have commits on your local branches you should push them first
+- If you want to create a miscellaneous "catch all" PR with all non-domain changes you can add a domain **at the end** of the config file with the path `./` (if you add it as first domain this one will include all changes as PRs as domains are evaluated from top to bottom)
+- At the end of the execution if there is files that were not included in any PR they will still be there as uncommitted changes, you may want to `git stash` them or `git reset --hard` in order to remove them
+
 ### Example of a configuration file
 
 - You will find example configs in `/example_config` directory
@@ -38,13 +45,13 @@ Available `make` targets at the root of the repo:
   - `settings.remote`
   - `settings.branchToSplit`
   - At least one domain
-  - Domains should always have at least `domains.path`
+  - Domains should always have at least the `path` field
 - Templates placeholders:
   - `{{change_id}}`: `id`
   - `{{domain_id}}`: `domain.id`
   - `{{domain_name}}`: `domain.name`
   - `{{team_name_1}}`: `domain.teams[0].name` (notice the template counting starts with `1`)
-  - `{{team_url_1}}`: `Domain.Teams[0].Url`
+  - `{{team_url_1}}`: `domain.Teams[0].Url`
 
 ## Prerequisites
 
@@ -60,6 +67,7 @@ Available `make` targets at the root of the repo:
 - Under the hood vanilla `git` commands are called, this made it faster to implement but brings limitations in performance and stability (if `git` changes some of its returned values BiT may break)
 - Paths are plain strings, this limits portability
 - The changes are not done in a transaction style, which means if the operation fails mid-way you may find the repository in an unwanted state and you may need to do manual cleanup or run `bit -cleanup path/to/your/config.json`
+- Wildcards are not supported for domains paths
 
 ## License
 
