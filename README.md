@@ -1,5 +1,7 @@
 # Big is Tiny (BiT) - Big changes made simple
 
+![Unit Tests](https://github.com/mikysett/big-is-tiny/actions/workflows/general.yml/badge.svg)
+
 BiT is a basic and simple tool to split your big branches into smaller PRs to improve development speed, reduce reviews times and improve their quality.
 
 ## Key features
