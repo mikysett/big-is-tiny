@@ -1,6 +1,11 @@
 package main
 
-import "context"
+import (
+	"context"
+	"fmt"
+
+	"github.com/google/go-cmp/cmp"
+)
 
 func fixtureFlags(mods ...func(*Flags)) *Flags {
 	flags := &Flags{
@@ -101,4 +106,15 @@ func fixtureGitOps(mods ...func(*GitOps)) *GitOps {
 		mod(gitOps)
 	}
 	return gitOps
+}
+
+func checkExportResults(expectedDomains []*Domain) ExportResultsFunc {
+	return func(ctx context.Context, flags *Flags, config *BigChange) error {
+		// We got a different configuration of what's expected
+		diff := cmp.Diff(expectedDomains, config.Domains)
+		if diff != "" {
+			return fmt.Errorf("%v", diff)
+		}
+		return nil
+	}
 }
