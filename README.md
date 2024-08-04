@@ -12,10 +12,12 @@ BiT is a basic and simple tool to split your big branches into smaller PRs to im
 - Templates for domain based commit messages, PRs and branch names
 - Supported Platforms: `GitHub`, `Azure`
 - Customizable with a `config.json` file
+- Can output the created PRs in markdown format
 
 ## How to install it
 
 Clone the repository locally: `git clone git@github.com:mikysett/big-is-tiny.git`.
+
 Available `make` targets at the root of the repo:
 
 - `make install`: install `bit` globally on your machine
@@ -34,7 +36,7 @@ Available `make` targets at the root of the repo:
 
 - It's important that the repo do not have any uncommitted changes at the moment of the execution as those could be added to the generated PRs if they match the paths
 - BiT will fetch the changed files from the remote branch, so if you have commits on your local branches you should push them first
-- If you want to create a miscellaneous "catch all" PR with all non-domain changes you can add a domain **at the end** of the config file with the path `./` (if you add it as first domain this one will include all changes as PRs as domains are evaluated from top to bottom)
+- If you want to create a miscellaneous "catch all" PR with all non-domain changes you can add a domain **at the end** of the config file with the path `./` (if you add it as first domain this one will include all changes as domains are evaluated from top to bottom)
 - At the end of the execution if there is files that were not included in any PR they will still be there as uncommitted changes, you may want to `git stash` them or `git reset --hard` in order to remove them
 
 ### Example of a configuration file
