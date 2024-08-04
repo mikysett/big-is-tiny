@@ -3,10 +3,12 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"strconv"
 )
 
 type AzurePr struct {
-	URL string `json:"url"`
+	BaseUrl      string `json:"baseUrl"`
+	CodeReviewId int    `json:"codeReviewId"`
 }
 
 func AzureCreatePr(ctx context.Context, settings *Settings, head, title, description string) (string, error) {
@@ -17,6 +19,7 @@ func AzureCreatePr(ctx context.Context, settings *Settings, head, title, descrip
 		"--description", description,
 		"--target-branch", settings.MainBranch,
 		"--output", "json",
+		"--query", "{baseUrl:repository.webUrl, codeReviewId:codeReviewId}",
 	}
 	if settings.IsDraftPrs {
 		prFlags = append(prFlags, "--draft")
@@ -33,5 +36,7 @@ func AzureCreatePr(ctx context.Context, settings *Settings, head, title, descrip
 		log.Error("failed to unmarshal url of the PR", "error", err)
 		return "", err
 	}
-	return string(pr.URL), nil
+
+	fullUrl := string(pr.BaseUrl) + "/pullrequest/" + strconv.Itoa(pr.CodeReviewId)
+	return fullUrl, nil
 }
