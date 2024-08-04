@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"sync"
 )
 
 func (bigChange *BigChange) generateFromTemplate(domain *Domain, template string) string {
@@ -27,9 +28,16 @@ func (bit *BigIsTiny) cleanup(ctx context.Context, bigChange *BigChange) {
 	log.Debug("remove all branches and PRs")
 
 	_ = bit.gitOps.gitCheckout(ctx, bigChange.Settings.MainBranch)
+	var wg sync.WaitGroup
 	for _, domain := range bigChange.Domains {
-		// Errors are expected to be logged here as branch existence is not checked
-		_ = bit.gitOps.gitDeleteBranch(ctx, domain.Branch.Name)
-		_ = bit.gitOps.gitDeleteRemoteBranch(ctx, bigChange.Settings.Remote, domain.Branch.Name)
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			// Errors are expected to be logged here as branch existence is not checked
+			_ = bit.gitOps.gitDeleteBranch(ctx, domain.Branch.Name)
+			_ = bit.gitOps.gitDeleteRemoteBranch(ctx, bigChange.Settings.Remote, domain.Branch.Name)
+			_ = bit.gitOps.abandonPr(ctx, domain.Branch.Name)
+		}()
 	}
+	wg.Wait()
 }
