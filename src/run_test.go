@@ -179,6 +179,16 @@ var runTests = []struct {
 		},
 		expectedErr: fmt.Errorf("createPr failed"),
 	},
+	{
+		description: "Fail on exportResults",
+		given: givenRun{
+			exportResults: func(ctx context.Context, f *Flags, bc *BigChange) error { return fmt.Errorf("exportResults failed") },
+			flags:         fixtureFlags(),
+			gitOps:        fixtureGitOps(),
+			config:        fixtureBigChange(),
+		},
+		expectedErr: fmt.Errorf("exportResults failed"),
+	},
 }
 
 func TestRun(t *testing.T) {
