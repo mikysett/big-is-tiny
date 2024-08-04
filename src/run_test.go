@@ -41,6 +41,11 @@ var runTests = []struct {
 				bc.Domains[2].Branch = &Branch{
 					Name: "bit-dom3-big-change-split",
 				}
+				bc.Domains[2].PullRequest = &PullRequest{
+					Title: "CC dom3: Big change split",
+					Body:  "This change refers to this refactor for domain CC dom3: https://example.com",
+					Url:   "",
+				}
 			}).Domains),
 			flags:  fixtureFlags(),
 			gitOps: fixtureGitOps(),

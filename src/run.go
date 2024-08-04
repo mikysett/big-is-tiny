@@ -6,10 +6,14 @@ import (
 )
 
 func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
-	// Generate the names for all new branches
+	// Generate the names for all new branches and PRs
 	for _, domain := range config.Domains {
 		domain.Branch = &Branch{
 			Name: config.generateFromTemplate(domain, config.Settings.BranchNameTemplate),
+		}
+		domain.PullRequest = &PullRequest{
+			Title: config.generateFromTemplate(domain, config.Settings.PrNameTemplate),
+			Body:  config.generateFromTemplate(domain, config.Settings.PrDescTemplate),
 		}
 	}
 
@@ -18,7 +22,7 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 		return nil
 	}
 
-	// On failure remove the branches created during the split
+	// On failure remove the branches and PRs created during the split
 	defer func() {
 		if err != nil {
 			bit.cleanup(ctx, config)
@@ -52,10 +56,6 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 	for _, domain := range config.Domains {
 		if !fileChangedInDomain(domain.Path, changedFiles) {
 			continue
-		}
-		domain.PullRequest = &PullRequest{
-			Title: config.generateFromTemplate(domain, config.Settings.PrNameTemplate),
-			Body:  config.generateFromTemplate(domain, config.Settings.PrDescTemplate),
 		}
 
 		err = bit.createBranch(ctx, config, domain, config.Settings)
