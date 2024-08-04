@@ -78,7 +78,7 @@ func gitReset(ctx context.Context) error {
 }
 
 func gitPushSetUpstream(ctx context.Context, remote string, branchName string) error {
-	_, err := runCmd(ctx, "git", "push", "--set-upstream", remote, branchName)
+	_, err := runCmd(ctx, "git", "push", "--set-upstream", remote, fmt.Sprintf("%[1]s:%[1]s", branchName))
 	if err != nil {
 		return err
 	}
