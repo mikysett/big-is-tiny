@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"strings"
+
+	"golang.org/x/sync/errgroup"
 )
 
 func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
@@ -17,17 +19,16 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 		}
 	}
 
-	if bit.flags.Cleanup {
-		bit.cleanup(ctx, config)
-		return nil
-	}
-
-	// On failure remove the branches and PRs created during the split
+	// On cleanup or failure remove the branches and PRs created during the split
 	defer func() {
-		if err != nil {
+		if bit.flags.Cleanup || err != nil {
 			bit.cleanup(ctx, config)
 		}
 	}()
+
+	if bit.flags.Cleanup {
+		return nil
+	}
 
 	// Checkout to the main branch
 	err = bit.gitOps.gitCheckout(ctx, config.Settings.MainBranch)
@@ -53,6 +54,7 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 		return err
 	}
 
+	errGrp := new(errgroup.Group)
 	for _, domain := range config.Domains {
 		if !fileChangedInDomain(domain.Path, changedFiles) {
 			continue
@@ -63,10 +65,21 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 			return err
 		}
 
-		domain.PullRequest.Url, err = bit.createPullRequest(ctx, domain, config.Settings)
-		if err != nil {
-			return err
-		}
+		errGrp.Go(func() error {
+			err = bit.gitOps.gitPushSetUpstream(ctx, config.Settings.Remote, domain.Branch.Name)
+			if err != nil {
+				return err
+			}
+
+			domain.PullRequest.Url, err = bit.createPullRequest(ctx, domain, config.Settings)
+			if err != nil {
+				return err
+			}
+			return nil
+		})
+	}
+	if err := errGrp.Wait(); err != nil {
+		return err
 	}
 
 	err = bit.exportResults(ctx, bit.flags, config)
@@ -130,11 +143,6 @@ func (bit *BigIsTiny) createBranch(ctx context.Context, config *BigChange, domai
 	}
 
 	err = bit.gitOps.gitCommit(ctx, config.generateFromTemplate(domain, settings.CommitMsgTemplate))
-	if err != nil {
-		return err
-	}
-
-	err = bit.gitOps.gitPushSetUpstream(ctx, settings.Remote, domain.Branch.Name)
 	if err != nil {
 		return err
 	}
