@@ -59,10 +59,12 @@ type BigIsTiny struct {
 }
 
 type Flags struct {
-	Cleanup    bool
-	Verbose    bool
-	ConfigPath string
-	Platform   Platform
+	Cleanup     bool
+	Verbose     bool
+	ConfigPath  string
+	Platform    Platform
+	MarkdownOut bool
+	FileOut     string
 }
 
 type GitZeroArgsFunc func(context.Context) error

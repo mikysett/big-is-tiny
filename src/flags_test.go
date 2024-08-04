@@ -21,22 +21,26 @@ var flagsTests = []struct {
 	{
 		description: "Happy path - all flags passed (long versions)",
 		args: []string{
-			"-verbose", "-cleanup", "-platform", "azure", "anotherConfig.json",
+			"-verbose", "-cleanup", "-platform", "azure", "-markdown", "-output", "../file.out", "anotherConfig.json",
 		},
 		expectedFlags: fixtureFlags(func(f *Flags) {
 			f.Cleanup = true
 			f.Verbose = true
 			f.Platform = Platform(Azure)
+			f.MarkdownOut = true
+			f.FileOut = "../file.out"
 			f.ConfigPath = "anotherConfig.json"
 		}),
 	},
 	{
 		description: "Happy path - short versions flags",
 		args: []string{
-			"-v", "-p", "azure",
+			"-v", "-p", "azure", "-m", "-o", "../file.out",
 		},
 		expectedFlags: fixtureFlags(func(f *Flags) {
 			f.Verbose = true
+			f.MarkdownOut = true
+			f.FileOut = "../file.out"
 			f.Platform = Platform(Azure)
 		}),
 	},

@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-const usage = `Usage: bit [-v | --verbose] [-cleanup] [-p | --platform] [-h | --help] <path to config file>
+const usage = `Usage: bit [-v | --verbose] [-cleanup] [-p | --platform] [-m | --markdown] [-o | --output] [-h | --help] <path to config file>
 
 If not specified the default path to the config file is './bit_config.json'
 
@@ -14,10 +14,12 @@ If not specified the default path to the config file is './bit_config.json'
         delete branches and PRs
   -v, --verbose
         set logs to DEBUG level
-  -dry-run
-        do not create branches or PRs
   -p, --platform
-		platform used for PRs, can be "github" (default) or "azure"
+        platform used for PRs, can be "github" (default) or "azure"
+  -m, --markdown
+        format the created PRs in markdown (default json)
+  -o, --output
+        writes the results in the specified file
   -h, --help
         print this help information
 `
@@ -25,14 +27,18 @@ If not specified the default path to the config file is './bit_config.json'
 func getFlags(progName string, args []string) (*Flags, error) {
 	rawFlags := flag.NewFlagSet(progName, flag.ExitOnError)
 
-	var verbose, cleanup bool
-	var rawPlatform string
+	var verbose, cleanup, markdownOut bool
+	var rawPlatform, fileOut string
 	var platform Platform
 	rawFlags.BoolVar(&cleanup, "cleanup", false, "delete branches and PRs")
 	rawFlags.BoolVar(&verbose, "verbose", false, "set logs to DEBUG level")
 	rawFlags.BoolVar(&verbose, "v", false, "set logs to DEBUG level")
+	rawFlags.BoolVar(&markdownOut, "markdown", false, "format the created PRs in markdown (default json)")
+	rawFlags.BoolVar(&markdownOut, "m", false, "format the created PRs in markdown (default json)")
 	rawFlags.StringVar(&rawPlatform, "platform", "github", "platform used for PRs, can be `github` (default) or `azure`")
 	rawFlags.StringVar(&rawPlatform, "p", "github", "platform used for PRs, can be `github` (default) or `azure`")
+	rawFlags.StringVar(&fileOut, "output", "", "writes the results in the specified file")
+	rawFlags.StringVar(&fileOut, "o", "", "writes the results in the specified file")
 	rawFlags.Usage = func() { fmt.Fprint(os.Stderr, usage) }
 	rawFlags.Parse(args)
 
@@ -46,9 +52,11 @@ func getFlags(progName string, args []string) (*Flags, error) {
 	}
 
 	flags := &Flags{
-		Cleanup:  cleanup,
-		Verbose:  verbose,
-		Platform: platform,
+		Cleanup:     cleanup,
+		Verbose:     verbose,
+		Platform:    platform,
+		MarkdownOut: markdownOut,
+		FileOut:     fileOut,
 	}
 	if configPath := rawFlags.Arg(0); configPath != "" {
 		flags.ConfigPath = configPath
