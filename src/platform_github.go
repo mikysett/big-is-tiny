@@ -29,3 +29,8 @@ func GitHubCreatePr(ctx context.Context, settings *Settings, head, title, body s
 	prUrl := string(rawPrUrl[:])
 	return strings.Trim(prUrl, "'"), nil
 }
+
+// GitHub automatically abandon PR with deleted source branches, so this is a noOp
+func GitHubAbandonPr(_ context.Context, _ string) error {
+	return nil
+}

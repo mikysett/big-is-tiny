@@ -72,6 +72,7 @@ type GitOneArgStringFunc func(context.Context, string) error
 type GitTwoArgsStringFunc func(context.Context, string, string) error
 type GitStatusFunc func(context.Context) ([]byte, error)
 type CreatePrFunc func(context.Context, *Settings, string, string, string) (string, error)
+type AbandonPrFunc func(context.Context, string) error
 
 type GitOps struct {
 	gitCheckout           GitOneArgStringFunc
@@ -85,6 +86,7 @@ type GitOps struct {
 	gitReset              GitZeroArgsFunc
 	gitPushSetUpstream    GitTwoArgsStringFunc
 	createPr              CreatePrFunc
+	abandonPr             AbandonPrFunc
 }
 
 func main() {
@@ -126,6 +128,7 @@ func main() {
 			gitReset:              gitReset,
 			gitPushSetUpstream:    gitPushSetUpstream,
 			createPr:              GetCreatePrForPlatform(flags.Platform),
+			abandonPr:             GetAbandonPrForPlatform(flags.Platform),
 		},
 	}
 

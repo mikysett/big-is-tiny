@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -99,6 +100,12 @@ func fixtureGitOps(mods ...func(*GitOps)) *GitOps {
 		gitPushSetUpstream: func(ctx context.Context, s1, s2 string) error { return nil },
 		createPr: func(ctx context.Context, s1 *Settings, s2, s3, s4 string) (string, error) {
 			return s2 + "/pr", nil
+		},
+		abandonPr: func(ctx context.Context, s string) error {
+			if len(strings.Split(s, "/")) < 2 {
+				return fmt.Errorf("unreachable")
+			}
+			return nil
 		},
 	}
 	for _, mod := range mods {

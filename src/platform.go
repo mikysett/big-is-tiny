@@ -24,6 +24,17 @@ func GetCreatePrForPlatform(p Platform) func(context.Context, *Settings, string,
 	}
 }
 
+func GetAbandonPrForPlatform(p Platform) func(context.Context, string) error {
+	switch p {
+	case Platform(GitHub):
+		return GitHubAbandonPr
+	case Platform(Azure):
+		return AzureAbandonPr
+	default:
+		panic("unreachable")
+	}
+}
+
 func (e Platform) String() string {
 	switch e {
 	case Azure:
