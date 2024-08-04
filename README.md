@@ -69,6 +69,7 @@ Available `make` targets at the root of the repo:
 - Paths are plain strings, this limits portability
 - The changes are not done in a transaction style, which means if the operation fails mid-way you may find the repository in an unwanted state and you may need to do manual cleanup or run `bit -cleanup path/to/your/config.json`
 - Wildcards are not supported for domains paths
+- GitHub have low limits per minute that may be hit by BiT, for now the only workaround is to create multiple config files and manually batch the calls to BiT
 
 ## License
 
