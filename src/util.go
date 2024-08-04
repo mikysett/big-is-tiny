@@ -24,7 +24,7 @@ func (bigChange *BigChange) generateFromTemplate(domain *Domain, template string
 
 func (bit *BigIsTiny) cleanup(ctx context.Context, bigChange *BigChange) {
 	log := LoggerFromContext(ctx)
-	log.Info("remove all branches and PRs")
+	log.Debug("remove all branches and PRs")
 
 	_ = bit.gitOps.gitCheckout(ctx, bigChange.Settings.MainBranch)
 	for _, domain := range bigChange.Domains {
