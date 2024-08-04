@@ -1,0 +1,1115 @@
+{
+  "id": "big-change-1",
+  "settings": {
+    "mainBranch": "main",
+    "remote": "azure",
+    "branchToSplit": "big-change-to-split-100-domains",
+    "isDraftPrs": false,
+    "branchNameTemplate": "bit-{{domain_name}}-big-change-split",
+    "commitMsgTemplate": "implement new feature for {{domain_name}} at {{team_name_1}}({{team_url_1}}) and {{team_name_2}}({{team_url_2}})",
+    "prNameTemplate": "[{{change_id}}] {{domain_id}} {{domain_name}}: Big change split",
+    "prDescTemplate": "This change refers to this refactor for domain {{domain_id}} {{domain_name}}: https://example.com"
+  },
+  "domains": [
+    {
+      "name": "dom1",
+      "id": "DOMID1",
+      "path": "domains/dom1/",
+      "teams": [
+        {
+          "name": "Team 1",
+          "url": "https://example_1.com"
+        }
+      ]
+    },
+    {
+      "name": "dom2",
+      "id": "DOMID2",
+      "path": "domains/dom2/",
+      "teams": [
+        {
+          "name": "Team 2",
+          "url": "https://example_2.com"
+        }
+      ]
+    },
+    {
+      "name": "dom3",
+      "id": "DOMID3",
+      "path": "domains/dom3/",
+      "teams": [
+        {
+          "name": "Team 3",
+          "url": "https://example_3.com"
+        }
+      ]
+    },
+    {
+      "name": "dom4",
+      "id": "DOMID4",
+      "path": "domains/dom4/",
+      "teams": [
+        {
+          "name": "Team 4",
+          "url": "https://example_4.com"
+        }
+      ]
+    },
+    {
+      "name": "dom5",
+      "id": "DOMID5",
+      "path": "domains/dom5/",
+      "teams": [
+        {
+          "name": "Team 5",
+          "url": "https://example_5.com"
+        }
+      ]
+    },
+    {
+      "name": "dom6",
+      "id": "DOMID6",
+      "path": "domains/dom6/",
+      "teams": [
+        {
+          "name": "Team 6",
+          "url": "https://example_6.com"
+        }
+      ]
+    },
+    {
+      "name": "dom7",
+      "id": "DOMID7",
+      "path": "domains/dom7/",
+      "teams": [
+        {
+          "name": "Team 7",
+          "url": "https://example_7.com"
+        }
+      ]
+    },
+    {
+      "name": "dom8",
+      "id": "DOMID8",
+      "path": "domains/dom8/",
+      "teams": [
+        {
+          "name": "Team 8",
+          "url": "https://example_8.com"
+        }
+      ]
+    },
+    {
+      "name": "dom9",
+      "id": "DOMID9",
+      "path": "domains/dom9/",
+      "teams": [
+        {
+          "name": "Team 9",
+          "url": "https://example_9.com"
+        }
+      ]
+    },
+    {
+      "name": "dom10",
+      "id": "DOMID10",
+      "path": "domains/dom10/",
+      "teams": [
+        {
+          "name": "Team 10",
+          "url": "https://example_10.com"
+        }
+      ]
+    },
+    {
+      "name": "dom11",
+      "id": "DOMID11",
+      "path": "domains/dom11/",
+      "teams": [
+        {
+          "name": "Team 11",
+          "url": "https://example_11.com"
+        }
+      ]
+    },
+    {
+      "name": "dom12",
+      "id": "DOMID12",
+      "path": "domains/dom12/",
+      "teams": [
+        {
+          "name": "Team 12",
+          "url": "https://example_12.com"
+        }
+      ]
+    },
+    {
+      "name": "dom13",
+      "id": "DOMID13",
+      "path": "domains/dom13/",
+      "teams": [
+        {
+          "name": "Team 13",
+          "url": "https://example_13.com"
+        }
+      ]
+    },
+    {
+      "name": "dom14",
+      "id": "DOMID14",
+      "path": "domains/dom14/",
+      "teams": [
+        {
+          "name": "Team 14",
+          "url": "https://example_14.com"
+        }
+      ]
+    },
+    {
+      "name": "dom15",
+      "id": "DOMID15",
+      "path": "domains/dom15/",
+      "teams": [
+        {
+          "name": "Team 15",
+          "url": "https://example_15.com"
+        }
+      ]
+    },
+    {
+      "name": "dom16",
+      "id": "DOMID16",
+      "path": "domains/dom16/",
+      "teams": [
+        {
+          "name": "Team 16",
+          "url": "https://example_16.com"
+        }
+      ]
+    },
+    {
+      "name": "dom17",
+      "id": "DOMID17",
+      "path": "domains/dom17/",
+      "teams": [
+        {
+          "name": "Team 17",
+          "url": "https://example_17.com"
+        }
+      ]
+    },
+    {
+      "name": "dom18",
+      "id": "DOMID18",
+      "path": "domains/dom18/",
+      "teams": [
+        {
+          "name": "Team 18",
+          "url": "https://example_18.com"
+        }
+      ]
+    },
+    {
+      "name": "dom19",
+      "id": "DOMID19",
+      "path": "domains/dom19/",
+      "teams": [
+        {
+          "name": "Team 19",
+          "url": "https://example_19.com"
+        }
+      ]
+    },
+    {
+      "name": "dom20",
+      "id": "DOMID20",
+      "path": "domains/dom20/",
+      "teams": [
+        {
+          "name": "Team 20",
+          "url": "https://example_20.com"
+        }
+      ]
+    },
+    {
+      "name": "dom21",
+      "id": "DOMID21",
+      "path": "domains/dom21/",
+      "teams": [
+        {
+          "name": "Team 21",
+          "url": "https://example_21.com"
+        }
+      ]
+    },
+    {
+      "name": "dom22",
+      "id": "DOMID22",
+      "path": "domains/dom22/",
+      "teams": [
+        {
+          "name": "Team 22",
+          "url": "https://example_22.com"
+        }
+      ]
+    },
+    {
+      "name": "dom23",
+      "id": "DOMID23",
+      "path": "domains/dom23/",
+      "teams": [
+        {
+          "name": "Team 23",
+          "url": "https://example_23.com"
+        }
+      ]
+    },
+    {
+      "name": "dom24",
+      "id": "DOMID24",
+      "path": "domains/dom24/",
+      "teams": [
+        {
+          "name": "Team 24",
+          "url": "https://example_24.com"
+        }
+      ]
+    },
+    {
+      "name": "dom25",
+      "id": "DOMID25",
+      "path": "domains/dom25/",
+      "teams": [
+        {
+          "name": "Team 25",
+          "url": "https://example_25.com"
+        }
+      ]
+    },
+    {
+      "name": "dom26",
+      "id": "DOMID26",
+      "path": "domains/dom26/",
+      "teams": [
+        {
+          "name": "Team 26",
+          "url": "https://example_26.com"
+        }
+      ]
+    },
+    {
+      "name": "dom27",
+      "id": "DOMID27",
+      "path": "domains/dom27/",
+      "teams": [
+        {
+          "name": "Team 27",
+          "url": "https://example_27.com"
+        }
+      ]
+    },
+    {
+      "name": "dom28",
+      "id": "DOMID28",
+      "path": "domains/dom28/",
+      "teams": [
+        {
+          "name": "Team 28",
+          "url": "https://example_28.com"
+        }
+      ]
+    },
+    {
+      "name": "dom29",
+      "id": "DOMID29",
+      "path": "domains/dom29/",
+      "teams": [
+        {
+          "name": "Team 29",
+          "url": "https://example_29.com"
+        }
+      ]
+    },
+    {
+      "name": "dom30",
+      "id": "DOMID30",
+      "path": "domains/dom30/",
+      "teams": [
+        {
+          "name": "Team 30",
+          "url": "https://example_30.com"
+        }
+      ]
+    },
+    {
+      "name": "dom31",
+      "id": "DOMID31",
+      "path": "domains/dom31/",
+      "teams": [
+        {
+          "name": "Team 31",
+          "url": "https://example_31.com"
+        }
+      ]
+    },
+    {
+      "name": "dom32",
+      "id": "DOMID32",
+      "path": "domains/dom32/",
+      "teams": [
+        {
+          "name": "Team 32",
+          "url": "https://example_32.com"
+        }
+      ]
+    },
+    {
+      "name": "dom33",
+      "id": "DOMID33",
+      "path": "domains/dom33/",
+      "teams": [
+        {
+          "name": "Team 33",
+          "url": "https://example_33.com"
+        }
+      ]
+    },
+    {
+      "name": "dom34",
+      "id": "DOMID34",
+      "path": "domains/dom34/",
+      "teams": [
+        {
+          "name": "Team 34",
+          "url": "https://example_34.com"
+        }
+      ]
+    },
+    {
+      "name": "dom35",
+      "id": "DOMID35",
+      "path": "domains/dom35/",
+      "teams": [
+        {
+          "name": "Team 35",
+          "url": "https://example_35.com"
+        }
+      ]
+    },
+    {
+      "name": "dom36",
+      "id": "DOMID36",
+      "path": "domains/dom36/",
+      "teams": [
+        {
+          "name": "Team 36",
+          "url": "https://example_36.com"
+        }
+      ]
+    },
+    {
+      "name": "dom37",
+      "id": "DOMID37",
+      "path": "domains/dom37/",
+      "teams": [
+        {
+          "name": "Team 37",
+          "url": "https://example_37.com"
+        }
+      ]
+    },
+    {
+      "name": "dom38",
+      "id": "DOMID38",
+      "path": "domains/dom38/",
+      "teams": [
+        {
+          "name": "Team 38",
+          "url": "https://example_38.com"
+        }
+      ]
+    },
+    {
+      "name": "dom39",
+      "id": "DOMID39",
+      "path": "domains/dom39/",
+      "teams": [
+        {
+          "name": "Team 39",
+          "url": "https://example_39.com"
+        }
+      ]
+    },
+    {
+      "name": "dom40",
+      "id": "DOMID40",
+      "path": "domains/dom40/",
+      "teams": [
+        {
+          "name": "Team 40",
+          "url": "https://example_40.com"
+        }
+      ]
+    },
+    {
+      "name": "dom41",
+      "id": "DOMID41",
+      "path": "domains/dom41/",
+      "teams": [
+        {
+          "name": "Team 41",
+          "url": "https://example_41.com"
+        }
+      ]
+    },
+    {
+      "name": "dom42",
+      "id": "DOMID42",
+      "path": "domains/dom42/",
+      "teams": [
+        {
+          "name": "Team 42",
+          "url": "https://example_42.com"
+        }
+      ]
+    },
+    {
+      "name": "dom43",
+      "id": "DOMID43",
+      "path": "domains/dom43/",
+      "teams": [
+        {
+          "name": "Team 43",
+          "url": "https://example_43.com"
+        }
+      ]
+    },
+    {
+      "name": "dom44",
+      "id": "DOMID44",
+      "path": "domains/dom44/",
+      "teams": [
+        {
+          "name": "Team 44",
+          "url": "https://example_44.com"
+        }
+      ]
+    },
+    {
+      "name": "dom45",
+      "id": "DOMID45",
+      "path": "domains/dom45/",
+      "teams": [
+        {
+          "name": "Team 45",
+          "url": "https://example_45.com"
+        }
+      ]
+    },
+    {
+      "name": "dom46",
+      "id": "DOMID46",
+      "path": "domains/dom46/",
+      "teams": [
+        {
+          "name": "Team 46",
+          "url": "https://example_46.com"
+        }
+      ]
+    },
+    {
+      "name": "dom47",
+      "id": "DOMID47",
+      "path": "domains/dom47/",
+      "teams": [
+        {
+          "name": "Team 47",
+          "url": "https://example_47.com"
+        }
+      ]
+    },
+    {
+      "name": "dom48",
+      "id": "DOMID48",
+      "path": "domains/dom48/",
+      "teams": [
+        {
+          "name": "Team 48",
+          "url": "https://example_48.com"
+        }
+      ]
+    },
+    {
+      "name": "dom49",
+      "id": "DOMID49",
+      "path": "domains/dom49/",
+      "teams": [
+        {
+          "name": "Team 49",
+          "url": "https://example_49.com"
+        }
+      ]
+    },
+    {
+      "name": "dom50",
+      "id": "DOMID50",
+      "path": "domains/dom50/",
+      "teams": [
+        {
+          "name": "Team 50",
+          "url": "https://example_50.com"
+        }
+      ]
+    },
+    {
+      "name": "dom51",
+      "id": "DOMID51",
+      "path": "domains/dom51/",
+      "teams": [
+        {
+          "name": "Team 51",
+          "url": "https://example_51.com"
+        }
+      ]
+    },
+    {
+      "name": "dom52",
+      "id": "DOMID52",
+      "path": "domains/dom52/",
+      "teams": [
+        {
+          "name": "Team 52",
+          "url": "https://example_52.com"
+        }
+      ]
+    },
+    {
+      "name": "dom53",
+      "id": "DOMID53",
+      "path": "domains/dom53/",
+      "teams": [
+        {
+          "name": "Team 53",
+          "url": "https://example_53.com"
+        }
+      ]
+    },
+    {
+      "name": "dom54",
+      "id": "DOMID54",
+      "path": "domains/dom54/",
+      "teams": [
+        {
+          "name": "Team 54",
+          "url": "https://example_54.com"
+        }
+      ]
+    },
+    {
+      "name": "dom55",
+      "id": "DOMID55",
+      "path": "domains/dom55/",
+      "teams": [
+        {
+          "name": "Team 55",
+          "url": "https://example_55.com"
+        }
+      ]
+    },
+    {
+      "name": "dom56",
+      "id": "DOMID56",
+      "path": "domains/dom56/",
+      "teams": [
+        {
+          "name": "Team 56",
+          "url": "https://example_56.com"
+        }
+      ]
+    },
+    {
+      "name": "dom57",
+      "id": "DOMID57",
+      "path": "domains/dom57/",
+      "teams": [
+        {
+          "name": "Team 57",
+          "url": "https://example_57.com"
+        }
+      ]
+    },
+    {
+      "name": "dom58",
+      "id": "DOMID58",
+      "path": "domains/dom58/",
+      "teams": [
+        {
+          "name": "Team 58",
+          "url": "https://example_58.com"
+        }
+      ]
+    },
+    {
+      "name": "dom59",
+      "id": "DOMID59",
+      "path": "domains/dom59/",
+      "teams": [
+        {
+          "name": "Team 59",
+          "url": "https://example_59.com"
+        }
+      ]
+    },
+    {
+      "name": "dom60",
+      "id": "DOMID60",
+      "path": "domains/dom60/",
+      "teams": [
+        {
+          "name": "Team 60",
+          "url": "https://example_60.com"
+        }
+      ]
+    },
+    {
+      "name": "dom61",
+      "id": "DOMID61",
+      "path": "domains/dom61/",
+      "teams": [
+        {
+          "name": "Team 61",
+          "url": "https://example_61.com"
+        }
+      ]
+    },
+    {
+      "name": "dom62",
+      "id": "DOMID62",
+      "path": "domains/dom62/",
+      "teams": [
+        {
+          "name": "Team 62",
+          "url": "https://example_62.com"
+        }
+      ]
+    },
+    {
+      "name": "dom63",
+      "id": "DOMID63",
+      "path": "domains/dom63/",
+      "teams": [
+        {
+          "name": "Team 63",
+          "url": "https://example_63.com"
+        }
+      ]
+    },
+    {
+      "name": "dom64",
+      "id": "DOMID64",
+      "path": "domains/dom64/",
+      "teams": [
+        {
+          "name": "Team 64",
+          "url": "https://example_64.com"
+        }
+      ]
+    },
+    {
+      "name": "dom65",
+      "id": "DOMID65",
+      "path": "domains/dom65/",
+      "teams": [
+        {
+          "name": "Team 65",
+          "url": "https://example_65.com"
+        }
+      ]
+    },
+    {
+      "name": "dom66",
+      "id": "DOMID66",
+      "path": "domains/dom66/",
+      "teams": [
+        {
+          "name": "Team 66",
+          "url": "https://example_66.com"
+        }
+      ]
+    },
+    {
+      "name": "dom67",
+      "id": "DOMID67",
+      "path": "domains/dom67/",
+      "teams": [
+        {
+          "name": "Team 67",
+          "url": "https://example_67.com"
+        }
+      ]
+    },
+    {
+      "name": "dom68",
+      "id": "DOMID68",
+      "path": "domains/dom68/",
+      "teams": [
+        {
+          "name": "Team 68",
+          "url": "https://example_68.com"
+        }
+      ]
+    },
+    {
+      "name": "dom69",
+      "id": "DOMID69",
+      "path": "domains/dom69/",
+      "teams": [
+        {
+          "name": "Team 69",
+          "url": "https://example_69.com"
+        }
+      ]
+    },
+    {
+      "name": "dom70",
+      "id": "DOMID70",
+      "path": "domains/dom70/",
+      "teams": [
+        {
+          "name": "Team 70",
+          "url": "https://example_70.com"
+        }
+      ]
+    },
+    {
+      "name": "dom71",
+      "id": "DOMID71",
+      "path": "domains/dom71/",
+      "teams": [
+        {
+          "name": "Team 71",
+          "url": "https://example_71.com"
+        }
+      ]
+    },
+    {
+      "name": "dom72",
+      "id": "DOMID72",
+      "path": "domains/dom72/",
+      "teams": [
+        {
+          "name": "Team 72",
+          "url": "https://example_72.com"
+        }
+      ]
+    },
+    {
+      "name": "dom73",
+      "id": "DOMID73",
+      "path": "domains/dom73/",
+      "teams": [
+        {
+          "name": "Team 73",
+          "url": "https://example_73.com"
+        }
+      ]
+    },
+    {
+      "name": "dom74",
+      "id": "DOMID74",
+      "path": "domains/dom74/",
+      "teams": [
+        {
+          "name": "Team 74",
+          "url": "https://example_74.com"
+        }
+      ]
+    },
+    {
+      "name": "dom75",
+      "id": "DOMID75",
+      "path": "domains/dom75/",
+      "teams": [
+        {
+          "name": "Team 75",
+          "url": "https://example_75.com"
+        }
+      ]
+    },
+    {
+      "name": "dom76",
+      "id": "DOMID76",
+      "path": "domains/dom76/",
+      "teams": [
+        {
+          "name": "Team 76",
+          "url": "https://example_76.com"
+        }
+      ]
+    },
+    {
+      "name": "dom77",
+      "id": "DOMID77",
+      "path": "domains/dom77/",
+      "teams": [
+        {
+          "name": "Team 77",
+          "url": "https://example_77.com"
+        }
+      ]
+    },
+    {
+      "name": "dom78",
+      "id": "DOMID78",
+      "path": "domains/dom78/",
+      "teams": [
+        {
+          "name": "Team 78",
+          "url": "https://example_78.com"
+        }
+      ]
+    },
+    {
+      "name": "dom79",
+      "id": "DOMID79",
+      "path": "domains/dom79/",
+      "teams": [
+        {
+          "name": "Team 79",
+          "url": "https://example_79.com"
+        }
+      ]
+    },
+    {
+      "name": "dom80",
+      "id": "DOMID80",
+      "path": "domains/dom80/",
+      "teams": [
+        {
+          "name": "Team 80",
+          "url": "https://example_80.com"
+        }
+      ]
+    },
+    {
+      "name": "dom81",
+      "id": "DOMID81",
+      "path": "domains/dom81/",
+      "teams": [
+        {
+          "name": "Team 81",
+          "url": "https://example_81.com"
+        }
+      ]
+    },
+    {
+      "name": "dom82",
+      "id": "DOMID82",
+      "path": "domains/dom82/",
+      "teams": [
+        {
+          "name": "Team 82",
+          "url": "https://example_82.com"
+        }
+      ]
+    },
+    {
+      "name": "dom83",
+      "id": "DOMID83",
+      "path": "domains/dom83/",
+      "teams": [
+        {
+          "name": "Team 83",
+          "url": "https://example_83.com"
+        }
+      ]
+    },
+    {
+      "name": "dom84",
+      "id": "DOMID84",
+      "path": "domains/dom84/",
+      "teams": [
+        {
+          "name": "Team 84",
+          "url": "https://example_84.com"
+        }
+      ]
+    },
+    {
+      "name": "dom85",
+      "id": "DOMID85",
+      "path": "domains/dom85/",
+      "teams": [
+        {
+          "name": "Team 85",
+          "url": "https://example_85.com"
+        }
+      ]
+    },
+    {
+      "name": "dom86",
+      "id": "DOMID86",
+      "path": "domains/dom86/",
+      "teams": [
+        {
+          "name": "Team 86",
+          "url": "https://example_86.com"
+        }
+      ]
+    },
+    {
+      "name": "dom87",
+      "id": "DOMID87",
+      "path": "domains/dom87/",
+      "teams": [
+        {
+          "name": "Team 87",
+          "url": "https://example_87.com"
+        }
+      ]
+    },
+    {
+      "name": "dom88",
+      "id": "DOMID88",
+      "path": "domains/dom88/",
+      "teams": [
+        {
+          "name": "Team 88",
+          "url": "https://example_88.com"
+        }
+      ]
+    },
+    {
+      "name": "dom89",
+      "id": "DOMID89",
+      "path": "domains/dom89/",
+      "teams": [
+        {
+          "name": "Team 89",
+          "url": "https://example_89.com"
+        }
+      ]
+    },
+    {
+      "name": "dom90",
+      "id": "DOMID90",
+      "path": "domains/dom90/",
+      "teams": [
+        {
+          "name": "Team 90",
+          "url": "https://example_90.com"
+        }
+      ]
+    },
+    {
+      "name": "dom91",
+      "id": "DOMID91",
+      "path": "domains/dom91/",
+      "teams": [
+        {
+          "name": "Team 91",
+          "url": "https://example_91.com"
+        }
+      ]
+    },
+    {
+      "name": "dom92",
+      "id": "DOMID92",
+      "path": "domains/dom92/",
+      "teams": [
+        {
+          "name": "Team 92",
+          "url": "https://example_92.com"
+        }
+      ]
+    },
+    {
+      "name": "dom93",
+      "id": "DOMID93",
+      "path": "domains/dom93/",
+      "teams": [
+        {
+          "name": "Team 93",
+          "url": "https://example_93.com"
+        }
+      ]
+    },
+    {
+      "name": "dom94",
+      "id": "DOMID94",
+      "path": "domains/dom94/",
+      "teams": [
+        {
+          "name": "Team 94",
+          "url": "https://example_94.com"
+        }
+      ]
+    },
+    {
+      "name": "dom95",
+      "id": "DOMID95",
+      "path": "domains/dom95/",
+      "teams": [
+        {
+          "name": "Team 95",
+          "url": "https://example_95.com"
+        }
+      ]
+    },
+    {
+      "name": "dom96",
+      "id": "DOMID96",
+      "path": "domains/dom96/",
+      "teams": [
+        {
+          "name": "Team 96",
+          "url": "https://example_96.com"
+        }
+      ]
+    },
+    {
+      "name": "dom97",
+      "id": "DOMID97",
+      "path": "domains/dom97/",
+      "teams": [
+        {
+          "name": "Team 97",
+          "url": "https://example_97.com"
+        }
+      ]
+    },
+    {
+      "name": "dom98",
+      "id": "DOMID98",
+      "path": "domains/dom98/",
+      "teams": [
+        {
+          "name": "Team 98",
+          "url": "https://example_98.com"
+        }
+      ]
+    },
+    {
+      "name": "dom99",
+      "id": "DOMID99",
+      "path": "domains/dom99/",
+      "teams": [
+        {
+          "name": "Team 99",
+          "url": "https://example_99.com"
+        }
+      ]
+    },
+    {
+      "name": "dom100",
+      "id": "DOMID100",
+      "path": "domains/dom100/",
+      "teams": [
+        {
+          "name": "Team 100",
+          "url": "https://example_100.com"
+        }
+      ]
+    }
+  ]
+}
