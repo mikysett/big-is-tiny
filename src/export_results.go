@@ -28,7 +28,7 @@ func exportResults(ctx context.Context, flags *Flags, config *BigChange) (err er
 
 	createdPrs := make([]createdPr, 0, len(config.Domains))
 	for _, domain := range config.Domains {
-		if domain.PullRequest == nil {
+		if domain.PullRequest == nil || domain.PullRequest.Url == "" {
 			continue
 		}
 		createdPrs = append(createdPrs, createdPr{
