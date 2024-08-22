@@ -20,6 +20,8 @@ If not specified the default path to the config file is './bit_config.json'
         format the created PRs in markdown (default json)
   -o, --output
         writes the results in the specified file
+  -d, --allow-deletions
+        also updates file deletions from the source branch (git --no-overlay flag)
   -h, --help
         print this help information
 `
@@ -27,7 +29,7 @@ If not specified the default path to the config file is './bit_config.json'
 func getFlags(progName string, args []string) (*Flags, error) {
 	rawFlags := flag.NewFlagSet(progName, flag.ExitOnError)
 
-	var verbose, cleanup, markdownOut bool
+	var verbose, cleanup, markdownOut, allowDeletions bool
 	var rawPlatform, fileOut string
 	var platform Platform
 	rawFlags.BoolVar(&cleanup, "cleanup", false, "delete branches and PRs")
@@ -35,6 +37,8 @@ func getFlags(progName string, args []string) (*Flags, error) {
 	rawFlags.BoolVar(&verbose, "v", false, "set logs to DEBUG level")
 	rawFlags.BoolVar(&markdownOut, "markdown", false, "format the created PRs in markdown (default json)")
 	rawFlags.BoolVar(&markdownOut, "m", false, "format the created PRs in markdown (default json)")
+	rawFlags.BoolVar(&allowDeletions, "d", false, "writes the results in the specified file")
+	rawFlags.BoolVar(&allowDeletions, "allow-deletions", false, "writes the results in the specified file")
 	rawFlags.StringVar(&rawPlatform, "platform", "github", "platform used for PRs, can be `github` (default) or `azure`")
 	rawFlags.StringVar(&rawPlatform, "p", "github", "platform used for PRs, can be `github` (default) or `azure`")
 	rawFlags.StringVar(&fileOut, "output", "", "writes the results in the specified file")
@@ -52,11 +56,12 @@ func getFlags(progName string, args []string) (*Flags, error) {
 	}
 
 	flags := &Flags{
-		Cleanup:     cleanup,
-		Verbose:     verbose,
-		Platform:    platform,
-		MarkdownOut: markdownOut,
-		FileOut:     fileOut,
+		Cleanup:        cleanup,
+		Verbose:        verbose,
+		Platform:       platform,
+		MarkdownOut:    markdownOut,
+		FileOut:        fileOut,
+		AllowDeletions: allowDeletions,
 	}
 	if configPath := rawFlags.Arg(0); configPath != "" {
 		flags.ConfigPath = configPath

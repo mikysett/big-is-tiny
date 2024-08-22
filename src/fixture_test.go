@@ -10,10 +10,11 @@ import (
 
 func fixtureFlags(mods ...func(*Flags)) *Flags {
 	flags := &Flags{
-		Cleanup:    false,
-		Verbose:    false,
-		ConfigPath: "bit_config.json",
-		Platform:   Platform(GitHub),
+		Cleanup:        false,
+		Verbose:        false,
+		ConfigPath:     "bit_config.json",
+		Platform:       Platform(GitHub),
+		AllowDeletions: false,
 	}
 	for _, mod := range mods {
 		mod(flags)
