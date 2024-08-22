@@ -135,7 +135,9 @@ var runTests = []struct {
 			exportResults: checkExportResults(nil),
 			flags:         fixtureFlags(),
 			gitOps: fixtureGitOps(func(g *GitOps) {
-				g.gitCheckoutFiles = func(ctx context.Context, s1, s2 string) error { return fmt.Errorf("gitCheckoutFiles failed") }
+				g.gitCheckoutFiles = func(ctx context.Context, s1, s2 string, allowDeletions bool) error {
+					return fmt.Errorf("gitCheckoutFiles failed")
+				}
 			}),
 			config: fixtureBigChange(),
 		},

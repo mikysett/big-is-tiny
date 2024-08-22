@@ -37,7 +37,7 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 	}
 
 	// Fetch the files on remote branch for the changes we are working on
-	err = bit.gitOps.gitCheckoutFiles(ctx, config.Settings.Remote, config.Settings.BranchToSplit)
+	err = bit.gitOps.gitCheckoutFiles(ctx, config.Settings.Remote, config.Settings.BranchToSplit, bit.flags.AllowDeletions)
 	if err != nil {
 		return err
 	}

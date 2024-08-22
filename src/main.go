@@ -74,6 +74,7 @@ type GitTwoArgsStringFunc func(context.Context, string, string) error
 type GitStatusFunc func(context.Context) ([]byte, error)
 type CreatePrFunc func(context.Context, *Settings, string, string, string) (string, error)
 type AbandonPrFunc func(context.Context, string) error
+type GitCheckoutFilesFunc func(context.Context, string, string, bool) error
 
 type GitOps struct {
 	gitCheckout           GitOneArgStringFunc
@@ -83,7 +84,7 @@ type GitOps struct {
 	gitStatus             GitStatusFunc
 	gitAdd                GitOneArgStringFunc
 	gitCommit             GitOneArgStringFunc
-	gitCheckoutFiles      GitTwoArgsStringFunc
+	gitCheckoutFiles      GitCheckoutFilesFunc
 	gitReset              GitZeroArgsFunc
 	gitPushSetUpstream    GitTwoArgsStringFunc
 	createPr              CreatePrFunc

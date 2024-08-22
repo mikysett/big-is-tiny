@@ -61,8 +61,14 @@ func gitCommit(ctx context.Context, message string) error {
 	return nil
 }
 
-func gitCheckoutFiles(ctx context.Context, remote string, branchName string) error {
-	_, err := runCmd(ctx, "git", "checkout", "--no-overlay", fmt.Sprintf("%s/%s", remote, branchName), "--", ".")
+func gitCheckoutFiles(ctx context.Context, remote string, branchName string, allowDeletions bool) error {
+	gitFlags := []string{"checkout"}
+	if allowDeletions {
+		gitFlags = append(gitFlags, "--no-overlay")
+	}
+	gitFlags = append(gitFlags, fmt.Sprintf("%s/%s", remote, branchName), "--", ".")
+
+	_, err := runCmd(ctx, "git", gitFlags...)
 	if err != nil {
 		return err
 	}
