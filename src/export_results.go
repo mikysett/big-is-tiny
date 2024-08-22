@@ -26,23 +26,24 @@ func exportResults(ctx context.Context, flags *Flags, config *BigChange) (err er
 		defer fdOut.Close()
 	}
 
-	if config.Settings.OutputTemplate != "" {
-		for _, domain := range config.Domains {
-			fmt.Fprintf(fdOut, "%s\n", config.generateFromTemplate(domain, config.Settings.OutputTemplate))
+	createdPrs := make([]createdPr, 0, len(config.Domains))
+	for _, domain := range config.Domains {
+		if domain.PullRequest.Url == "" {
+			continue
 		}
-	} else {
-		// Default writes json formatted Branch name and PR URL
-		createdPrs := make([]createdPr, 0, len(config.Domains))
-		for _, domain := range config.Domains {
-			if domain.PullRequest.Url == "" {
-				continue
-			}
+		if config.Settings.OutputTemplate == "" {
 			createdPrs = append(createdPrs, createdPr{
 				Branch: domain.Branch.Name,
 				PrUrl:  domain.PullRequest.Url,
 			})
+		} else {
+			fmt.Fprintf(fdOut, "%s\n",
+				config.generateFromTemplate(domain, config.Settings.OutputTemplate))
 		}
+	}
 
+	// Default writes json formatted Branch name and PR URL
+	if config.Settings.OutputTemplate == "" {
 		jsonFormattedResult, err := json.MarshalIndent(createdPrs, "", "    ")
 		if err != nil {
 			log := LoggerFromContext(ctx)
