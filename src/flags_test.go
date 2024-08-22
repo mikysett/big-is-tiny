@@ -21,13 +21,12 @@ var flagsTests = []struct {
 	{
 		description: "Happy path - all flags passed (long versions)",
 		args: []string{
-			"-verbose", "-cleanup", "-platform", "azure", "-markdown", "-output", "../file.out", "-allow-deletions", "anotherConfig.json",
+			"-verbose", "-cleanup", "-platform", "azure", "-output", "../file.out", "-allow-deletions", "anotherConfig.json",
 		},
 		expectedFlags: fixtureFlags(func(f *Flags) {
 			f.Cleanup = true
 			f.Verbose = true
 			f.Platform = Platform(Azure)
-			f.MarkdownOut = true
 			f.FileOut = "../file.out"
 			f.ConfigPath = "anotherConfig.json"
 			f.AllowDeletions = true
@@ -36,11 +35,10 @@ var flagsTests = []struct {
 	{
 		description: "Happy path - short versions flags",
 		args: []string{
-			"-v", "-p", "azure", "-m", "-o", "../file.out", "-d", "anotherConfig.json",
+			"-v", "-p", "azure", "-o", "../file.out", "-d", "anotherConfig.json",
 		},
 		expectedFlags: fixtureFlags(func(f *Flags) {
 			f.Verbose = true
-			f.MarkdownOut = true
 			f.FileOut = "../file.out"
 			f.Platform = Platform(Azure)
 			f.ConfigPath = "anotherConfig.json"

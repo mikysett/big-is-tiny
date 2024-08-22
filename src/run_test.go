@@ -25,7 +25,7 @@ var runTests = []struct {
 				bc.Domains[0].Branch = &Branch{
 					Name: "bit-dom1-big-change-split",
 				}
-				bc.Domains[0].PullRequest = &PullRequest{
+				bc.Domains[0].PullRequest = PullRequest{
 					Title: "AA dom1: Big change split",
 					Body:  "This change refers to this refactor for domain AA dom1: https://example.com",
 					Url:   "bit-dom1-big-change-split/pr",
@@ -33,7 +33,7 @@ var runTests = []struct {
 				bc.Domains[1].Branch = &Branch{
 					Name: "bit-dom2-big-change-split",
 				}
-				bc.Domains[1].PullRequest = &PullRequest{
+				bc.Domains[1].PullRequest = PullRequest{
 					Title: "BB dom2: Big change split",
 					Body:  "This change refers to this refactor for domain BB dom2: https://example.com",
 					Url:   "bit-dom2-big-change-split/pr",
@@ -41,7 +41,7 @@ var runTests = []struct {
 				bc.Domains[2].Branch = &Branch{
 					Name: "bit-dom3-big-change-split",
 				}
-				bc.Domains[2].PullRequest = &PullRequest{
+				bc.Domains[2].PullRequest = PullRequest{
 					Title: "CC dom3: Big change split",
 					Body:  "This change refers to this refactor for domain CC dom3: https://example.com",
 					Url:   "",

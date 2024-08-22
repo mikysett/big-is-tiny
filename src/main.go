@@ -22,15 +22,16 @@ type Settings struct {
 	CommitMsgTemplate  string `json:"commitMsgTemplate"`
 	PrNameTemplate     string `json:"prNameTemplate"`
 	PrDescTemplate     string `json:"prDescTemplate"`
+	OutputTemplate     string `json:"outputTemplate"`
 }
 
 type Domain struct {
-	Name        string       `json:"name"`
-	Id          string       `json:"id"`
-	Path        string       `json:"path"`
-	Teams       []Team       `json:"teams"`
-	Branch      *Branch      `json:"branch"`
-	PullRequest *PullRequest `json:"pullRequest"`
+	Name        string      `json:"name"`
+	Id          string      `json:"id"`
+	Path        string      `json:"path"`
+	Teams       []Team      `json:"teams"`
+	Branch      *Branch     `json:"branch"`
+	PullRequest PullRequest `json:"pullRequest"`
 }
 
 type Team struct {
@@ -63,7 +64,6 @@ type Flags struct {
 	Verbose        bool
 	ConfigPath     string
 	Platform       Platform
-	MarkdownOut    bool
 	FileOut        string
 	AllowDeletions bool
 }

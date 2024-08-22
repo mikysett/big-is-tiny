@@ -29,14 +29,12 @@ If not specified the default path to the config file is './bit_config.json'
 func getFlags(progName string, args []string) (*Flags, error) {
 	rawFlags := flag.NewFlagSet(progName, flag.ExitOnError)
 
-	var verbose, cleanup, markdownOut, allowDeletions bool
+	var verbose, cleanup, allowDeletions bool
 	var rawPlatform, fileOut string
 	var platform Platform
 	rawFlags.BoolVar(&cleanup, "cleanup", false, "delete branches and PRs")
 	rawFlags.BoolVar(&verbose, "verbose", false, "set logs to DEBUG level")
 	rawFlags.BoolVar(&verbose, "v", false, "set logs to DEBUG level")
-	rawFlags.BoolVar(&markdownOut, "markdown", false, "format the created PRs in markdown (default json)")
-	rawFlags.BoolVar(&markdownOut, "m", false, "format the created PRs in markdown (default json)")
 	rawFlags.BoolVar(&allowDeletions, "d", false, "writes the results in the specified file")
 	rawFlags.BoolVar(&allowDeletions, "allow-deletions", false, "writes the results in the specified file")
 	rawFlags.StringVar(&rawPlatform, "platform", "github", "platform used for PRs, can be `github` (default) or `azure`")
@@ -59,7 +57,6 @@ func getFlags(progName string, args []string) (*Flags, error) {
 		Cleanup:        cleanup,
 		Verbose:        verbose,
 		Platform:       platform,
-		MarkdownOut:    markdownOut,
 		FileOut:        fileOut,
 		AllowDeletions: allowDeletions,
 	}

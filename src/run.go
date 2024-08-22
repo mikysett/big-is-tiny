@@ -10,13 +10,14 @@ import (
 func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 	// Generate the names for all new branches and PRs
 	for _, domain := range config.Domains {
-		domain.Branch = &Branch{
-			Name: config.generateFromTemplate(domain, config.Settings.BranchNameTemplate),
-		}
-		domain.PullRequest = &PullRequest{
-			Title: config.generateFromTemplate(domain, config.Settings.PrNameTemplate),
-			Body:  config.generateFromTemplate(domain, config.Settings.PrDescTemplate),
-		}
+		domain.initDomain(config)
+		// domain.Branch = &Branch{
+		// 	Name: config.generateFromTemplate(domain, config.Settings.BranchNameTemplate),
+		// }
+		// domain.PullRequest = &PullRequest{
+		// 	Title: config.generateFromTemplate(domain, config.Settings.PrNameTemplate),
+		// 	Body:  config.generateFromTemplate(domain, config.Settings.PrDescTemplate),
+		// }
 	}
 
 	// On cleanup or failure remove the branches and PRs created during the split
@@ -88,6 +89,16 @@ func (bit *BigIsTiny) run(ctx context.Context, config *BigChange) (err error) {
 	}
 
 	return nil
+}
+
+func (domain *Domain) initDomain(config *BigChange) {
+	domain.Branch = &Branch{
+		Name: config.generateFromTemplate(domain, config.Settings.BranchNameTemplate),
+	}
+	domain.PullRequest = PullRequest{
+		Title: config.generateFromTemplate(domain, config.Settings.PrNameTemplate),
+		Body:  config.generateFromTemplate(domain, config.Settings.PrDescTemplate),
+	}
 }
 
 func (bit *BigIsTiny) listChangedFiles(ctx context.Context) ([]string, error) {

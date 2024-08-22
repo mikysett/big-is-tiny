@@ -12,6 +12,8 @@ func (bigChange *BigChange) generateFromTemplate(domain *Domain, template string
 		"{{change_id}}", bigChange.Id,
 		"{{domain_name}}", domain.Name,
 		"{{domain_id}}", domain.Id,
+		"{{pr_title}}", domain.PullRequest.Title,
+		"{{pr_url}}", domain.PullRequest.Url,
 	}
 	for i, team := range domain.Teams {
 		replacements = append(replacements,
