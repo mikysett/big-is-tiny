@@ -50,11 +50,16 @@ Available `make` targets at the root of the repo:
   - At least one domain
   - Domains should always have at least the `path` field
 - Templates placeholders:
-  - `{{change_id}}`: `id`
-  - `{{domain_id}}`: `domain.id`
-  - `{{domain_name}}`: `domain.name`
-  - `{{team_name_1}}`: `domain.teams[0].name` (notice the template counting starts with `1`)
-  - `{{team_url_1}}`: `domain.Teams[0].Url`
+
+| Template Placeholder  | Corresponding Value                 |
+|-----------------------|-------------------------------------|
+| `{{change_id}}`       | `id`                                |
+| `{{domain_id}}`       | `domain.id`                         |
+| `{{domain_name}}`     | `domain.name`                       |
+| `{{team_name_1}}`     | `domain.teams[0].name` (notice the template counting starts with `1`) |
+| `{{team_url_1}}`      | `domain.Teams[0].Url`               |
+| `{{pr_title}}`        | `domain.PullRequest.Title`          |
+| `{{pr_url}}`          | `domain.PullRequest.Url`            |
 
 ## Prerequisites
 
