@@ -16,8 +16,6 @@ If not specified the default path to the config file is './bit_config.json'
         set logs to DEBUG level
   -p, --platform
         platform used for PRs, can be "github" (default) or "azure"
-  -m, --markdown
-        format the created PRs in markdown (default json)
   -o, --output
         writes the results in the specified file
   -d, --allow-deletions
